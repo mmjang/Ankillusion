@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:useLevel="false">
+        <solid android:color="@color/doodle_btn_pressed_color" /> <!-- 定义填充的颜色值 -->
+        <stroke
+            android:width="0.5dp"
+            android:color="@color/doodle_btn_border" />
+
+        <corners android:radius="3dp" />
+
+</shape>

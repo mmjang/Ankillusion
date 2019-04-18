@@ -1,0 +1,18 @@
+<resources>
+    <string name="doodle_app_name">涂鸦</string>
+
+    <string name="doodle_clear_screen">清屏</string>
+    <string name="doodle_cant_undo_after_clearing">清屏后不可撤销</string>
+    <string name="doodle_saving_picture">保存图片</string>
+    <string name="doodle_enter">确定</string>
+    <string name="doodle_cancel">取消</string>
+
+    <string name="doodle_edit">编辑</string>
+    <string name="doodle_remove">移除</string>
+    <string name="doodle_top">置顶</string>
+    <string name="doodle_bottom">置底</string>
+
+    <string name="doodle_select_image">选择图片</string>
+
+    <string name="doodle_edit_mode">编辑模式</string>
+</resources>
