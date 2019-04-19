@@ -53,7 +53,7 @@ public class DoodlePath extends DoodleRotatableItemBase {
     public void updateXY(float sx, float sy, float dx, float dy) {
         mSxy.set(sx, sy);
         mDxy.set(dx, dy);
-        mOriginPath.reset();
+        mOriginPath.reset();//清空
 
         if (DoodleShape.ARROW.equals(getShape())) {
             updateArrowPath(mOriginPath, mSxy.x, mSxy.y, mDxy.x, mDxy.y, getSize());
@@ -62,9 +62,11 @@ public class DoodlePath extends DoodleRotatableItemBase {
         } else if (DoodleShape.FILL_CIRCLE.equals(getShape()) || DoodleShape.HOLLOW_CIRCLE.equals(getShape())) {
             updateCirclePath(mOriginPath, mSxy.x, mSxy.y, mDxy.x, mDxy.y, getSize());
         } else if (DoodleShape.FILL_RECT.equals(getShape()) || DoodleShape.HOLLOW_RECT.equals(getShape())) {
+            //矩形
+            //四个值分别是矩形的对角坐标
             updateRectPath(mOriginPath, mSxy.x, mSxy.y, mDxy.x, mDxy.y, getSize());
         }
-
+        //调整中心点
         adjustPath(true);
     }
 
@@ -90,6 +92,7 @@ public class DoodlePath extends DoodleRotatableItemBase {
         return mSxy;
     }
 
+    //根据起始坐标，以及当前的画布状态（Pen，Shape，Size，Color）得到 Path
     public static DoodlePath toShape(IDoodle doodle, float sx, float sy, float dx, float dy) {
         DoodlePath path = new DoodlePath(doodle);
         path.setPen(doodle.getPen().copy());
@@ -106,6 +109,7 @@ public class DoodlePath extends DoodleRotatableItemBase {
         return path;
     }
 
+    //对已有 Path 根据 doodle 状态生成新 Path
     public static DoodlePath toPath(IDoodle doodle, Path p) {
         DoodlePath path = new DoodlePath(doodle);
         path.setPen(doodle.getPen().copy());
@@ -133,7 +137,7 @@ public class DoodlePath extends DoodleRotatableItemBase {
         getPen().config(this, mPaint);
         getColor().config(this, mPaint);
         getShape().config(this, mPaint);
-
+        //真正的绘制在这里！！
         canvas.drawPath(getPath(), mPaint);
     }
 

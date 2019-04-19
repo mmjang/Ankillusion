@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import java.util.List;
 
 import cn.forward.androids.ScaleGestureDetectorApi27;
 import cn.hzw.doodle.DoodleColor;
@@ -86,8 +90,10 @@ public class ScaleGestureItemDemo extends Activity {
         doodleView.setDefaultTouchDetector(touchDetector);
 
         // step 3
-        doodleView.setPen(DoodlePen.TEXT);
-        doodleView.setShape(DoodleShape.HAND_WRITE);
+//        doodleView.setPen(DoodlePen.TEXT);
+//        doodleView.setShape(DoodleShape.HAND_WRITE);
+        doodleView.setPen(DoodlePen.BRUSH);
+        doodleView.setShape(DoodleShape.FILL_RECT);
         doodleView.setColor(new DoodleColor(Color.RED));
 
         // step 4
@@ -117,6 +123,65 @@ public class ScaleGestureItemDemo extends Activity {
                 return super.onScale(detector);
             }
         }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            mLastTouchX = mTouchX;
+            mLastTouchY = mTouchY;
+            mTouchX = e.getX();
+            mTouchY = e.getY();
+
+            boolean found = false;
+            IDoodleSelectableItem item;
+            List<IDoodleItem> items = mDoodle.getAllItem();
+            for (int i = items.size() - 1; i >= 0; i--) {
+                IDoodleItem elem = items.get(i);
+                if (!elem.isDoodleEditable()) {
+                    continue;
+                }
+
+                if (!(elem instanceof IDoodleSelectableItem)) {
+                    continue;
+                }
+
+                item = (IDoodleSelectableItem) elem;
+
+                if (item.contains(mDoodle.toX(mTouchX), mDoodle.toY(mTouchY))) {
+                    found = true;
+                    setSelectedItem(item);
+                    mDoodle.setEditMode(true);
+                    PointF xy = item.getLocation();
+                    mStartX = xy.x;
+                    mStartY = xy.y;
+                    break;
+                }
+            }
+            if (!found) { // not found
+                if (mSelectedItem != null) { // 取消选定
+                    IDoodleSelectableItem old = mSelectedItem;
+                    setSelectedItem(null);
+                    if (mSelectionListener != null) {
+                        mSelectionListener.onSelectedItem(mDoodle, old, false);
+                        mDoodle.setEditMode(false);
+                    }
+                }
+            }
+            return true;
+        }
+//            } else if (isPenEditable(mDoodle.getPen())) {
+//                if (mSelectionListener != null) {
+//                    mSelectionListener.onCreateSelectableItem(mDoodle, mDoodle.toX(mTouchX), mDoodle.toY(mTouchY));
+//                }
+//            } else {
+//                // 模拟一次滑动
+//                onScrollBegin(e);
+//                e.offsetLocation(VALUE, VALUE);
+//                onScroll(e, e, VALUE, VALUE);
+//                onScrollEnd(e);
+//            }
+//            mDoodle.refresh();
+//            return true;
+//        }
     }
 
 }

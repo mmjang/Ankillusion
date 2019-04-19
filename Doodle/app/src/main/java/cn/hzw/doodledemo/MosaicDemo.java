@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -53,9 +54,11 @@ public class MosaicDemo extends Activity {
 
         // step 3
         doodleView.setPen(new MosaicPen());
-        doodleView.setShape(DoodleShape.HAND_WRITE);
+        //doodleView.setShape(DoodleShape.HAND_WRITE);
+        doodleView.setShape(DoodleShape.FILL_RECT);
+        doodleView.setColor(new DoodleColor(Color.RED));
         // setColor
-        findViewById(R.id.btn_mosaic_x3).performClick(); // see setMosaicLevel(View view)
+        //findViewById(R.id.btn_mosaic_x3).performClick(); // see setMosaicLevel(View view)
 
         // step 4
         ViewGroup container = (ViewGroup) findViewById(R.id.doodle_container);

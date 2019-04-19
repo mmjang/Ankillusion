@@ -23,38 +23,38 @@ import static cn.hzw.doodle.util.DrawUtil.computeAngle;
  */
 
 public class DoodleOnTouchGestureListener extends TouchGestureDetector.OnTouchGestureListener {
-    private static final float VALUE = 1f;
+    public static final float VALUE = 1f;
 
     // 触摸的相关信息
-    private float mTouchX, mTouchY;
-    private float mLastTouchX, mLastTouchY;
-    private float mTouchDownX, mTouchDownY;
+    public float mTouchX, mTouchY;
+    public float mLastTouchX, mLastTouchY;
+    public float mTouchDownX, mTouchDownY;
 
     // 缩放相关
-    private Float mLastFocusX;
-    private Float mLastFocusY;
-    private float mTouchCentreX, mTouchCentreY;
+    public Float mLastFocusX;
+    public Float mLastFocusY;
+    public float mTouchCentreX, mTouchCentreY;
 
 
-    private float mStartX, mStartY;
-    private float mRotateDiff; // 开始旋转item时的差值（当前item的中心点与触摸点的角度）
+    public float mStartX, mStartY;
+    public float mRotateDiff; // 开始旋转item时的差值（当前item的中心点与触摸点的角度）
 
-    private Path mCurrPath; // 当前手写的路径
-    private DoodlePath mCurrDoodlePath;
-    private CopyLocation mCopyLocation;
+    public Path mCurrPath; // 当前手写的路径
+    public DoodlePath mCurrDoodlePath;
+    public CopyLocation mCopyLocation;
 
-    private DoodleView mDoodle;
+    public DoodleView mDoodle;
 
     // 动画相关
-    private ValueAnimator mScaleAnimator;
-    private float mScaleAnimTransX, mScaleAnimTranY;
-    private ValueAnimator mTranslateAnimator;
-    private float mTransAnimOldY, mTransAnimY;
+    public ValueAnimator mScaleAnimator;
+    public float mScaleAnimTransX, mScaleAnimTranY;
+    public ValueAnimator mTranslateAnimator;
+    public float mTransAnimOldY, mTransAnimY;
 
-    private IDoodleSelectableItem mSelectedItem; // 当前选中的item
-    private ISelectionListener mSelectionListener;
+    public IDoodleSelectableItem mSelectedItem; // 当前选中的item
+    public ISelectionListener mSelectionListener;
 
-    private boolean mSupportScaleItem = true;
+    public boolean mSupportScaleItem = true;
 
     public DoodleOnTouchGestureListener(DoodleView doodle, ISelectionListener listener) {
         mDoodle = doodle;
@@ -234,7 +234,7 @@ public class DoodleOnTouchGestureListener extends TouchGestureDetector.OnTouchGe
     }
 
     // 判断当前画笔是否可编辑
-    private boolean isPenEditable(IDoodlePen pen) {
+    public boolean isPenEditable(IDoodlePen pen) {
         return (mDoodle.getPen() == DoodlePen.TEXT && pen == DoodlePen.TEXT)
                 || (mDoodle.getPen() == DoodlePen.BITMAP && pen == DoodlePen.BITMAP);
     }
