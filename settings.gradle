@@ -1,1 +1,4 @@
-include ':Doodle', ':app'
+include ':Doodle:doodle'
+include ":Doodle:app"
+//project(':libdoodle').projectDir = new File(settingsDir, '/Doodle/doodle/')
+include ':app'

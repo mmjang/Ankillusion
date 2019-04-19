@@ -21,7 +21,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':doodle')
+    implementation project(':Doodle:doodle')
     implementation ('cn.hzw.imageselector:library:1.0'){
         transitive = false
     }
