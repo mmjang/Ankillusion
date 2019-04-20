@@ -32,8 +32,13 @@ public class TransformUtil {
         for(int i = 0; i < 4; i ++){
             result[i][0] += offset_x;
             result[i][1] += offset_y;
+        }
 
+        for(int i = 0; i < 4; i ++){
             rotate(result[i], new double[]{center_x, center_y}, rotate);
+        }
+
+        for(int i = 0; i < 4; i ++){
             scale(result[i], new double[]{center_x, center_y}, scale);
         }
 
@@ -43,7 +48,7 @@ public class TransformUtil {
     public static void rotate(double[] point, double[] center, double angle){
         angle = angle * (Math.PI / 180);
         double x = Math.cos(angle) * (point[0] - center[0]) - Math.sin(angle) * (point[1] - center[1]) + center[0];
-        double y = Math.sin(angle) * (point[0] - center[0]) - Math.cos(angle) * (point[1] - center[1]) + center[1];
+        double y = Math.sin(angle) * (point[0] - center[0]) + Math.cos(angle) * (point[1] - center[1]) + center[1];
         point[0] = x;
         point[1] = y;
     }
@@ -56,5 +61,6 @@ public class TransformUtil {
     public static void main(String[] args){
         double[][] result = fromTransformToPolygon(644, 689, 714, 740, 116, 694, 42, 2.37);
         System.out.println(result);
+        ;
     }
 }
