@@ -1,0 +1,73 @@
+<html>
+    <head>
+      <title>Canvas tutorial</title>
+      <script type="text/javascript">
+        var shapes = [
+            {
+                path:[[94, 593],
+                        [13, 683],
+                        [137, 794],
+                        [218, 704]],
+                color:"#FFA500"
+            }
+        ];
+
+        function drawShapeListOnImage(
+            canvas, //the canvas to be drawn on 
+            img, //the image object to be draw, loaded
+            shapes, //the path to be 
+        ){
+            var ctx = canvas.getContext('2d');
+            var img_h = img.height;
+            var img_w = img.width;
+            canvas.width = window.innerWidth * 0.9;
+            canvas.height = (img_h / img_w) * canvas.width;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            var scale = canvas.width / img_w;
+            var i;
+            for(i = 0; i < shapes.length; i ++){
+                var shape = shapes[i];
+                ctx.fillStyle = shape.color;
+                ctx.strokeStyle = shape.color;
+                var path = shape.path;
+                if(path.length > 0){
+                    ctx.beginPath();
+                    ctx.moveTo(path[0][0] * scale, path[0][1] * scale);
+                    var j;
+                    for(j = 1; j < path.length; j ++){
+                        ctx.lineTo(path[j][0] * scale, path[j][1] * scale);
+                    }
+                    ctx.fill();
+                }
+            }
+        }
+
+
+        function draw(){
+          var canvas = document.getElementById('tutorial');
+          if (canvas.getContext){
+            var ctx = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function(){
+                drawShapeListOnImage(canvas, img, shapes);
+            }
+            img.src = 'heart.jpg'
+          }
+        }
+
+        window.addEventListener('resize', draw, false);
+      </script>
+      <style type="text/css">
+        canvas { 
+            border: 1px solid black; 
+            display: block;
+            margin: auto;
+            }
+      </style>
+    </head>
+    <body onload="draw();">
+      <canvas id="tutorial">
+      </canvas>
+    </body>
+  </html>
