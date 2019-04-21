@@ -1,93 +1,126 @@
 <div id='front'>{{Front}}</div>
 <div hidden id="occlusion_data">
-    {{Data}}
+		{{Data}}
 </div>
 <div id='occlusion_img'>
-    {{Image}}
+	{{Image}}
 </div>
 <canvas id="occlusion_canvas">
 </canvas>
 
-<script type="text/javascript">
+<script>
 	   function refresh(){
 	        var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").textContent);
-             draw(occlusion_data.shape_list_front);
+            draw(occlusion_data.shape_list_front);
+            //console.log('refresh')
         }
+       
+        //console.log('window onload')
         var img_ele = document.querySelector('#occlusion_img img');
-	   img_ele.onload = refresh;
+        if (img_ele.complete) {
+                refresh()
+                } else {
+                img_ele.addEventListener('load', refresh)
+                img_ele.addEventListener('error', function() {
+                    alert('error')
+                })
+        }
         window.addEventListener('resize', refresh, false);
 </script>
 
 @@@
 
-<div id='back'>{{Back}}</div>
+<div id='front'>{{Back}}</div>
 <div hidden id="occlusion_data">
-    {{Data}}
+  {{Data}}
 </div>
 <div id='occlusion_img'>
-    {{Image}}
+{{Image}}
 </div>
 <canvas id="occlusion_canvas">
 </canvas>
 
 <script type="text/javascript">
-	   function refresh(){
-	        var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").textContent);
-             draw(occlusion_data.shape_list_back);
-        }
-        var img_ele = document.querySelector('#occlusion_img img');
-	   img_ele.onload = refresh;
-        window.addEventListener('resize', refresh, false);
+ function refresh(){
+      var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").textContent);
+      draw(occlusion_data.shape_list_back);
+      //console.log('refresh')
+  }
+ 
+  //console.log('window onload')
+  var img_ele = document.querySelector('#occlusion_img img');
+  if (img_ele.complete) {
+          refresh()
+          } else {
+          img_ele.addEventListener('load', refresh)
+          img_ele.addEventListener('error', function() {
+              alert('error')
+          })
+  }
+  window.addEventListener('resize', refresh, false);
 </script>
 
 @@@
 
-</style>
-<style>
-.card {
- font-family: arial;
- font-size: 20px;
- text-align: left;
- color: black;
- background-color: white;
-}
-
-#occlusion_img img{
-     max-width: 100%;
-	display: block;
-     width:auto;
-     height: auto;
-     border: 1px solid black;
-     margin-left: auto;
-     margin-right: auto;
-}
-
-#occlusion_canvas{
-     border: 1px solid black;
-	display:inline;
-}
 </style>
 
 <script>
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function makeDarker(hex){
+            var vrgb = hexToRgb(hex);
+            return 'rgb(' + vrgb.r / 2 +',' + vrgb.g / 2 + ',' + vrgb.b / 2 +')'; 
+		}
+
+        function ColorLuminance(hex, lum) {
+
+	// validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+
+	return rgb;
+}
         function drawShapeListOnImage(canvas, img, shapes){
             var ctx = canvas.getContext('2d');
             canvas.style.position = 'absolute';
             var rect = img.getBoundingClientRect();
             canvas.style.left = rect.left + 'px';
             canvas.style.top = rect.top + 'px';
-
+            //console.log([img.width, img.height])
             canvas.width = img.width;
             canvas.height = img.height;
             var scale = canvas.width / img.naturalWidth;
             var i;
-
+            
             for(i = 0; i < shapes.length; i ++){
-
+                
                 var shape = shapes[i];
                 ctx.fillStyle = shape.color;
                 ctx.strokeStyle = shape.color;
+	            ctx.shadowColor = ColorLuminance(shape.color, -0.5);
+            	 ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 5;
                 var path = shape.data;
-
+                
                 if(path.length > 0){
                     ctx.beginPath();
                     ctx.moveTo(path[0][0] * scale, path[0][1] * scale);
@@ -104,10 +137,47 @@
           var canvas = document.getElementById('occlusion_canvas');
           if (canvas.getContext){
             var ctx = canvas.getContext('2d');
-            var img = document.querySelector("img");
+            var img = document.querySelector("#occlusion_img img");
+            //console.log('draw()')
+            //console.log(img)
             drawShapeListOnImage(canvas, img, shape_list);
           }
         }
+
 </script>
+<style>
+.card {
+ font-family: arial;
+ font-size: 20px;
+ text-align: left;
+ color: black;
+ background-color: #eeeeee;
+}
+
+#front, #back{
+	text-align: center;
+    margin-bottom: 10px;
+    font-size:1.5em;
+}
+
+#occlusion_img img{
+     max-width: 90%;
+	 display: block;
+     width:auto;
+     /*border: 1px solid white;*/
+     margin-left: auto;
+     margin-right: auto;
+
+     border-radius: 15px;
+     -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+     -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+     box-shadow: 2px 4px 5px 0px rgba(0, 0, 0, 0.6);
+}
+
+#occlusion_canvas{
+     /*border: 1px solid black;*/
+	 display:inline;
+}
+</style>
 
 <style>
