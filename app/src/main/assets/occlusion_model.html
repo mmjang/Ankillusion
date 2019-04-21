@@ -1,0 +1,113 @@
+<div id='front'>{{Front}}</div>
+<div hidden id="occlusion_data">
+    {{Data}}
+</div>
+<div id='occlusion_img'>
+    {{Image}}
+</div>
+<canvas id="occlusion_canvas">
+</canvas>
+
+<script type="text/javascript">
+	   function refresh(){
+	        var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").textContent);
+             draw(occlusion_data.shape_list_front);
+        }
+        var img_ele = document.querySelector('#occlusion_img img');
+	   img_ele.onload = refresh;
+        window.addEventListener('resize', refresh, false);
+</script>
+
+@@@
+
+<div id='back'>{{Back}}</div>
+<div hidden id="occlusion_data">
+    {{Data}}
+</div>
+<div id='occlusion_img'>
+    {{Image}}
+</div>
+<canvas id="occlusion_canvas">
+</canvas>
+
+<script type="text/javascript">
+	   function refresh(){
+	        var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").textContent);
+             draw(occlusion_data.shape_list_back);
+        }
+        var img_ele = document.querySelector('#occlusion_img img');
+	   img_ele.onload = refresh;
+        window.addEventListener('resize', refresh, false);
+</script>
+
+@@@
+
+</style>
+<style>
+.card {
+ font-family: arial;
+ font-size: 20px;
+ text-align: left;
+ color: black;
+ background-color: white;
+}
+
+#occlusion_img img{
+     max-width: 100%;
+	display: block;
+     width:auto;
+     height: auto;
+     border: 1px solid black;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+#occlusion_canvas{
+     border: 1px solid black;
+	display:inline;
+}
+</style>
+
+<script>
+        function drawShapeListOnImage(canvas, img, shapes){
+            var ctx = canvas.getContext('2d');
+            canvas.style.position = 'absolute';
+            var rect = img.getBoundingClientRect();
+            canvas.style.left = rect.left + 'px';
+            canvas.style.top = rect.top + 'px';
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var scale = canvas.width / img.naturalWidth;
+            var i;
+
+            for(i = 0; i < shapes.length; i ++){
+
+                var shape = shapes[i];
+                ctx.fillStyle = shape.color;
+                ctx.strokeStyle = shape.color;
+                var path = shape.data;
+
+                if(path.length > 0){
+                    ctx.beginPath();
+                    ctx.moveTo(path[0][0] * scale, path[0][1] * scale);
+                    var j;
+                    for(j = 1; j < path.length; j ++){
+                        ctx.lineTo(path[j][0] * scale, path[j][1] * scale);
+                    }
+                    ctx.fill();
+                }
+            }
+        }
+
+        function draw(shape_list){
+          var canvas = document.getElementById('occlusion_canvas');
+          if (canvas.getContext){
+            var ctx = canvas.getContext('2d');
+            var img = document.querySelector("img");
+            drawShapeListOnImage(canvas, img, shape_list);
+          }
+        }
+</script>
+
+<style>

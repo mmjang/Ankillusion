@@ -2,35 +2,26 @@
     <head>
       <title>Canvas tutorial</title>
       <script type="text/javascript">
-        var shapes = [
-            {
-                path:[[94, 593],
-                        [13, 683],
-                        [137, 794],
-                        [218, 704]],
-                color:"#FFA500"
-            }
-        ];
 
         function drawShapeListOnImage(
             canvas, //the canvas to be drawn on 
             img, //the image object to be draw, loaded
-            shapes, //the path to be 
+            shapes, //the path to be
         ){
             var ctx = canvas.getContext('2d');
-            var img_h = img.height;
-            var img_w = img.width;
-            canvas.width = window.innerWidth * 0.9;
-            canvas.height = (img_h / img_w) * canvas.width;
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            var scale = canvas.width / img_w;
+            canvas.style.position = 'absolute';
+            var rect = img.getBoundingClientRect();
+            canvas.style.left = rect.left + 'px';
+            canvas.style.top = rect.top + 'px';
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var scale = canvas.width / img.naturalWidth;
             var i;
             for(i = 0; i < shapes.length; i ++){
                 var shape = shapes[i];
                 ctx.fillStyle = shape.color;
                 ctx.strokeStyle = shape.color;
-                var path = shape.path;
+                var path = shape.data;
                 if(path.length > 0){
                     ctx.beginPath();
                     ctx.moveTo(path[0][0] * scale, path[0][1] * scale);
@@ -45,29 +36,58 @@
 
 
         function draw(){
-          var canvas = document.getElementById('tutorial');
+          var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").innerHTML);
+          var canvas = document.getElementById('occlusion_canvas');
           if (canvas.getContext){
             var ctx = canvas.getContext('2d');
-            var img = new Image();
-            img.onload = function(){
-                drawShapeListOnImage(canvas, img, shapes);
-            }
-            img.src = 'heart.jpg'
+            var img = document.querySelector("#occlusion_img");
+            drawShapeListOnImage(canvas, img, occlusion_data.shape_list_front);
           }
         }
 
         window.addEventListener('resize', draw, false);
       </script>
       <style type="text/css">
-        canvas { 
-            border: 1px solid black; 
+        #occlusion_img {
             display: block;
-            margin: auto;
+            width:90%;
+            border: 1px solid black;
+            margin: 0 auto;
             }
       </style>
     </head>
-    <body onload="draw();">
-      <canvas id="tutorial">
+    <body>
+      <div hidden id="occlusion_data">
+          {
+            "version": 1,
+            "image_file": "xxx.jpg",
+            "width": 200,
+            "height": 200,
+            "shape_list_front":[
+                                {
+                                  "type": "rect",
+                                  "color": "#ff0000",
+                                  "data":
+                                      [[94, 593],
+                                      [13, 683],
+                                      [137, 794],
+                                      [218, 704]]
+                                }
+                                ],
+          "shape_list_back":[
+                      {
+                      "type": "rect",
+                      "color": "#00ff00",
+                      "data":         [[94, 593],
+                                      [13, 683],
+                                      [137, 794],
+                                      [218, 704]]
+                      }
+                      ]
+          }
+      </div>
+      <img src='heart.jpg' id='occlusion_img' onload="draw()"/>
+      <canvas id="occlusion_canvas">
       </canvas>
     </body>
   </html>

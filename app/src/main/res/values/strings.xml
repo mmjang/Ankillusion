@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Ankillusion</string>
+    <string name="msg_no_storage_permission">
+        You have denied this app\'s access to external storage, so we cannot make occlusion cards for you.\n
+        Please grant this permission manually at application settings page.\n
+    </string>
+
+    <string name="msg_no_anki_api">
+        No access to ankidroid\'s API. You have to ensure that:\n
+        You have Ankidroid installed.\n
+        In the advanced settings of Ankidroid, You have \"Enable Ankidroid API\" checked.\n
+        You have grant the permission "Read And Write Ankidroid Database" in this app\' settings page.
+    </string>
 </resources>
