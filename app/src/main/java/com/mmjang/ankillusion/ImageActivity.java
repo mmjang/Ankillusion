@@ -23,6 +23,7 @@ import cn.hzw.doodle.DoodleShape;
 import cn.hzw.doodle.DoodleTouchDetector;
 import cn.hzw.doodle.DoodleView;
 import cn.hzw.doodle.IDoodleListener;
+import cn.hzw.doodle.MyDoodleOnTouchGestureListener;
 import cn.hzw.doodle.core.IDoodle;
 import cn.hzw.doodle.core.IDoodleItem;
 import cn.hzw.doodle.core.IDoodleSelectableItem;
@@ -50,7 +51,7 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
-        final DoodleOnTouchGestureListener touchGestureListener = new MyItemOnTouchGestureListener(doodleView, null);
+        final DoodleOnTouchGestureListener touchGestureListener = new MyDoodleOnTouchGestureListener(doodleView, null);
         DoodleTouchDetector touchDetector = new DoodleTouchDetector(this, touchGestureListener);
         doodleView.setDefaultTouchDetector(touchDetector);
         doodleView.setPen(DoodlePen.BRUSH);
@@ -73,62 +74,5 @@ public class ImageActivity extends AppCompatActivity {
                     }
                 }
         );
-    }
-
-
-    private static class MyItemOnTouchGestureListener extends DoodleOnTouchGestureListener {
-
-        public MyItemOnTouchGestureListener(DoodleView doodle, ISelectionListener listener) {
-            super(doodle, listener);
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            mLastTouchX = mTouchX;
-            mLastTouchY = mTouchY;
-            mTouchX = e.getX();
-            mTouchY = e.getY();
-
-            boolean found = false;
-            IDoodleSelectableItem item;
-            List<IDoodleItem> items = mDoodle.getAllItem();
-            for (int i = items.size() - 1; i >= 0; i--) {
-                IDoodleItem elem = items.get(i);
-                if (!elem.isDoodleEditable()) {
-                    continue;
-                }
-
-                if (elem instanceof DoodleBitmap){
-                    continue;
-                }
-
-                if (!(elem instanceof IDoodleSelectableItem)) {
-                    continue;
-                }
-
-                item = (IDoodleSelectableItem) elem;
-
-                if (item.contains(mDoodle.toX(mTouchX), mDoodle.toY(mTouchY))) {
-                    found = true;
-                    setSelectedItem(item);
-                    mDoodle.setEditMode(true);
-                    PointF xy = item.getLocation();
-                    mStartX = xy.x;
-                    mStartY = xy.y;
-                    break;
-                }
-            }
-            if (!found) { // not found
-                if (mSelectedItem != null) { // 取消选定
-                    IDoodleSelectableItem old = mSelectedItem;
-                    setSelectedItem(null);
-                    mDoodle.setEditMode(false);
-                    if (mSelectionListener != null) {
-                        mSelectionListener.onSelectedItem(mDoodle, old, false);
-                    }
-                }
-            }
-            return true;
-        }
     }
 }

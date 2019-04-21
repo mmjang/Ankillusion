@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.List;
@@ -309,6 +310,13 @@ public class DoodleOnTouchGestureListener extends TouchGestureDetector.OnTouchGe
         // 屏幕上的焦点
         mTouchCentreX = detector.getFocusX();
         mTouchCentreY = detector.getFocusY();
+
+        float span_dx = detector.getCurrentSpanX() - detector.getPreviousSpanX();
+        float span_dy = detector.getCurrentSpanY() - detector.getPreviousSpanY();
+
+        double arc = Math.atan(span_dx / span_dy);
+        double angle = arc * 180 / Math.PI;
+        Log.d("scale angle", angle + "");
 
         if (mLastFocusX != null && mLastFocusY != null) { // 焦点改变
             final float dx = mTouchCentreX - mLastFocusX;

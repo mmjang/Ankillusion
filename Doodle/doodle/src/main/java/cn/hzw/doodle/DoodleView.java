@@ -43,8 +43,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import cn.forward.androids.utils.ImageUtils;
@@ -56,6 +59,7 @@ import cn.hzw.doodle.core.IDoodleItem;
 import cn.hzw.doodle.core.IDoodlePen;
 import cn.hzw.doodle.core.IDoodleShape;
 import cn.hzw.doodle.core.IDoodleTouchDetector;
+import cn.hzw.doodle.occlusion.OcclusionItem;
 
 import static cn.hzw.doodle.util.DrawUtil.drawCircle;
 import static cn.hzw.doodle.util.DrawUtil.drawRect;
@@ -208,6 +212,24 @@ public class DoodleView extends FrameLayout implements IDoodle {
         mBackgroundView = new BackgroundView(context);
         addView(mBackgroundView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addView(mForegroundView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    public List<OcclusionItem> getOcclusionList(){
+        List<OcclusionItem> result = new ArrayList<>();
+        for(IDoodleItem doodleItem : mItemStack){
+            if(doodleItem instanceof DoodlePath){
+                DoodlePath doodlePath = (DoodlePath) doodleItem;
+                double[][] rectPath = doodlePath.getRectPath();
+                if(rectPath != null){
+                    OcclusionItem occlusionItem = new OcclusionItem();
+                    occlusionItem.type = OcclusionItem.Type.Rect;
+                    occlusionItem.color = doodlePath.getHexColor();
+                    occlusionItem.data = rectPath;
+                    result.add(occlusionItem);
+                }
+            }
+        }
+        return result;
     }
 
     @Override

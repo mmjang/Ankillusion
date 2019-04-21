@@ -2,6 +2,7 @@ package cn.hzw.doodle;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -16,6 +17,7 @@ import java.util.WeakHashMap;
 import cn.hzw.doodle.core.IDoodle;
 import cn.hzw.doodle.core.IDoodleColor;
 import cn.hzw.doodle.util.DrawUtil;
+import cn.hzw.doodle.util.TransformUtil;
 
 /**
  * 涂鸦轨迹
@@ -48,6 +50,35 @@ public class DoodlePath extends DoodleRotatableItemBase {
 
     public DoodlePath(IDoodle doodle, DoodlePaintAttrs attrs) {
         super(doodle, attrs, 0, 0, 0);
+    }
+
+    /**
+     * 当Path为实心矩形时返回路径坐标列表
+     * 否则返回 null
+     * @return
+     */
+    public double[][] getRectPath(){
+        if(DoodleShape.FILL_RECT.equals(getShape()) && getPen().equals(DoodlePen.BRUSH)){
+            return TransformUtil.fromTransformToPolygon(
+                    mSxy.x, mSxy.y,
+                    mDxy.x, mDxy.y,
+                    getPivotX(), getPivotY(),
+                    getItemRotate(),
+                    getScale()
+            );
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * getTheHexFormColor
+     * @return
+     */
+    public String getHexColor(){
+        int c = ((DoodleColor) getColor()).getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & c));
+        return hexColor;
     }
 
     public void updateXY(float sx, float sy, float dx, float dy) {

@@ -1,4 +1,4 @@
-package com.mmjang.ankillusion;
+package cn.hzw.doodle.util;
 
 import android.graphics.Path;
 
