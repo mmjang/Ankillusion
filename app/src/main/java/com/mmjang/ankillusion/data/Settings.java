@@ -58,7 +58,7 @@ public class Settings {
 
     /*************/
     public String getOcclusionColor(){
-        return sp.getString(OCCLUSION_COLOR, Constant.DEFAULT_OCCLUSION_COLOR);
+        return sp.getString(OCCLUSION_COLOR, Constant.DEFAULT_OCCLUSION_COLOR_HIGHLIGHT);
     }
 
     public void setOcclusionColor(String occlusionColor){

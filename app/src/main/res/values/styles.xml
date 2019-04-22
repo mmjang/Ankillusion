@@ -3,9 +3,20 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">#78909c</item>
+        <item name="colorPrimaryDark">#4b636e</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LauncherButtonTheme">
+        <item name="android:padding">40dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:background">@drawable/launcher_button_selector</item>
+    </style>
 </resources>

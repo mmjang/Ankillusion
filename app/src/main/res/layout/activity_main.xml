@@ -18,17 +18,61 @@
             android:orientation="horizontal"
             >
         </LinearLayout>
+
+        <!-- Image Cropper fill the remaining available height -->
+        <com.theartofdev.edmodo.cropper.CropImageView
+            app:cropInitialCropWindowPaddingRatio="0"
+            app:cropBackgroundColor="@color/colorPrimaryLightTransparent"
+            app:cropBorderLineColor="@color/colorPrimaryDark"
+            app:cropBorderCornerColor="@color/colorAccent"
+            app:cropBorderCornerThickness="4dp"
+            app:cropMultiTouchEnabled="true"
+            android:id="@+id/crop_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:orientation="horizontal"
+            android:id="@+id/image_crop_buttons"
             >
-            <Button
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_delete"
-                android:text="delete"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_baseline_rotate_right_24px"
+                android:id="@+id/btn_rotate"
+                android:background="@drawable/crop_button_selector"
+                />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_baseline_crop_24px"
+                android:id="@+id/btn_crop"
+                android:background="@drawable/crop_button_selector"
+                />
+            <ImageButton
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_baseline_close_24px"
+                android:id="@+id/btn_close"
+                android:background="@drawable/crop_button_selector"
                 />
         </LinearLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

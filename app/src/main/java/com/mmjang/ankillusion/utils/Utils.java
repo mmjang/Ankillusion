@@ -28,4 +28,9 @@ public class Utils {
                     }
                 }).show();
     }
+
+    public static String color2Hex(int color){
+        String strColor = String.format("#%06X", 0xFFFFFF & color);
+        return strColor;
+    }
 }

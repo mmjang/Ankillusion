@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.LauncherActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center"
+        tools:context=".ui.LauncherActivity"
+        android:gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+            <ImageButton
+                android:id="@+id/btn_open_camera"
+                style="@style/LauncherButtonTheme"
+                android:src="@drawable/ic_baseline_camera_alt_24px"
+                 />
+            <ImageButton
+                android:id="@+id/btn_open_gallery"
+                style="@style/LauncherButtonTheme"
+                android:src="@drawable/ic_baseline_photo_24px"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+            <ImageButton
+                android:id="@+id/btn_settings"
+                style="@style/LauncherButtonTheme"
+                android:src="@drawable/ic_baseline_settings_20px"
+                />
+            <ImageButton
+                android:id="@+id/btn_help"
+                style="@style/LauncherButtonTheme"
+                android:src="@drawable/ic_baseline_help_24px"
+                />
 
-</android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+</LinearLayout>
