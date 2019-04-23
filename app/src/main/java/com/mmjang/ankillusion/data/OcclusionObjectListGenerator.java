@@ -49,7 +49,29 @@ public class OcclusionObjectListGenerator {
             }
         }
         if(expType == OcclusionExportType.HIDE_ALL_REVEAL_ONE){
-            //todo: finish this
+            for(int i = 0; i < occlusionItemList.size(); i ++){
+                List<OcclusionItem> frontList = new ArrayList<>();
+                List<OcclusionItem> backList = new ArrayList<>();
+                for(int j = 0; j < occlusionItemList.size(); j ++){
+                    OcclusionItem copiedItem = occlusionItemList.get(j).clone();
+                    if(j == i){//this is the item to hide
+                        copiedItem.highlight = true;
+                        frontList.add(copiedItem);
+                    }else{
+                        frontList.add(copiedItem);
+                        backList.add(copiedItem.clone());
+                    }
+                }
+                OcclusionObject occlusionObject = new OcclusionObject(
+                        version,
+                        img,
+                        width,
+                        height,
+                        frontList,
+                        backList
+                );
+                occlusionObjectList.add(occlusionObject);
+            }
         }
 
         return occlusionObjectList;

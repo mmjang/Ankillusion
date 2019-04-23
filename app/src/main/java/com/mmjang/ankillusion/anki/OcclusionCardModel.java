@@ -24,13 +24,13 @@ public class OcclusionCardModel {
 
     String[] QFMT = new String[1];
     String[] AFMT = new String[1];
-    String[] Cards = {"recite", "type"};
+    String[] Cards = {"card1"};
     String CSS;
     public static final String [] FILEDS = {
-            "Front",
-            "Back",
             "Image",
-            "Data"
+            "Data",
+            "Front",
+            "Back"
     };
 
     public OcclusionCardModel(Context ct, AnkiDroidHelper ankiDroidHelper){
@@ -46,7 +46,7 @@ public class OcclusionCardModel {
             if(defaultModelSplitted.length == NUMBER_OF_MODEL_STRING) {
                 front[0] = defaultModelSplitted[0];
                 back[0] = defaultModelSplitted[1];
-                css = defaultModelSplitted[3];
+                css = defaultModelSplitted[2];
             }
             else{
                 ;
@@ -62,7 +62,7 @@ public class OcclusionCardModel {
         }
     }
 
-    private boolean needAddModel(){
+    public boolean needAddModel(){
         long storedModelId = Settings.getInstance(context).getModelId();
         if(storedModelId > 0){
             return false;
@@ -77,7 +77,7 @@ public class OcclusionCardModel {
         }
     }
 
-    private boolean addModel(){
+    public boolean addModel(){
         Long mid = mAnkidroid.getApi().addNewCustomModel(
                 defaultModelName,
                 FILEDS,
@@ -89,6 +89,7 @@ public class OcclusionCardModel {
                 null
         );
         if(mid != null){
+            Settings.getInstance(context).setModelId(mid);
             return true;
         }else{
             return false;

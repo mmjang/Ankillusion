@@ -7,8 +7,12 @@ import android.graphics.Rect;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,9 +20,21 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mmjang.ankillusion.R;
+import com.mmjang.ankillusion.anki.AnkiDroidHelper;
+import com.mmjang.ankillusion.anki.OcclusionCardModel;
 import com.mmjang.ankillusion.data.Constant;
+import com.mmjang.ankillusion.data.OcclusionExportType;
+import com.mmjang.ankillusion.data.OcclusionObject;
+import com.mmjang.ankillusion.data.OcclusionObjectListGenerator;
 import com.mmjang.ankillusion.data.Settings;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Map;
 
 import cn.forward.androids.utils.ImageUtils;
 import cn.hzw.doodle.DoodleColor;
@@ -31,6 +47,7 @@ import cn.hzw.doodle.IDoodleListener;
 import cn.hzw.doodle.MyDoodleOnTouchGestureListener;
 import cn.hzw.doodle.core.IDoodle;
 import cn.hzw.doodle.core.IDoodleSelectableItem;
+import cn.hzw.doodle.occlusion.OcclusionItem;
 
 public class ImageActivity extends AppCompatActivity {
     Settings settings;
@@ -41,6 +58,7 @@ public class ImageActivity extends AppCompatActivity {
     ImageButton btnRotate;
     ImageButton btnCrop;
     ImageButton btnClose;
+    Bitmap originalBitmap;
     private DoodleOnTouchGestureListener touchGestureListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +156,7 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void setUpDoodleView(Bitmap bitmap) {
+        originalBitmap = bitmap.copy(bitmap.getConfig(), true);
         Toast.makeText(this, "width: " + bitmap.getWidth() + "height: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
 
         doodleView = new DoodleView(this, bitmap, new IDoodleListener() {
@@ -185,5 +204,87 @@ public class ImageActivity extends AppCompatActivity {
         if(imageContainer != null){
             imageContainer.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.image_activity_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_edit_front_and_back_text:
+                onEditFrontAndBackText();
+                break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return true;
+    }
+
+    private void onEditFrontAndBackText() {
+        List<OcclusionItem> occlusionItemList = doodleView.getOcclusionList();
+        int height = doodleView.getDoodleBitmap().getHeight();
+        int width = doodleView.getDoodleBitmap().getWidth();
+        List<OcclusionObject> occlusionObjectList = OcclusionObjectListGenerator.gen(
+                1,
+                "image_test.jpg",
+                width,
+                height,
+                occlusionItemList,
+                OcclusionExportType.HIDE_ALL_REVEAL_ONE
+        );
+
+        AnkiDroidHelper ankiDroidHelper = new AnkiDroidHelper(this);
+        OcclusionCardModel model = new OcclusionCardModel(this, ankiDroidHelper);
+        if(model.needAddModel()){
+            boolean success = model.addModel();
+            boolean need = model.needAddModel();
+        }
+        Map<Long, String> deckList = ankiDroidHelper.getApi().getDeckList();
+        Long deckid= deckList.keySet().iterator().next();
+
+        FileOutputStream fOut = null;
+        try {
+            File root = new File(Environment.getExternalStorageDirectory() + "/AnkiDroid/collection.media/");
+            if(!root.exists()) {
+                root.mkdirs();
+            }
+            File sdImageMainDirectory = new File(root, "image_test.jpg");
+            //outputFileUri = Uri.fromFile(sdImageMainDirectory);
+            fOut = new FileOutputStream(sdImageMainDirectory);
+        } catch (Exception e) {
+
+        }
+        try {
+            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for(OcclusionObject obj : occlusionObjectList){
+            try {
+                String exportString = obj.toJsonString();
+                //exportString = exportString + "";
+                ankiDroidHelper.getApi().addNote(
+                        Settings.getInstance(this).getModelId(),
+                        deckid,
+                        new String[] {"<img src='image_test.jpg'/>", exportString,
+                            "",""},
+                        null
+                );
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 }

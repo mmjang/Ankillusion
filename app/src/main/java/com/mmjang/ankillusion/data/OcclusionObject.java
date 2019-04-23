@@ -1,5 +1,9 @@
 package com.mmjang.ankillusion.data;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +25,25 @@ public class OcclusionObject{
         this.height = height;
         this.shapeListFront = shapeListFront;
         this.shapeListBack = shapeListBack;
+    }
+
+    public String toJsonString() throws JSONException{
+        JSONObject occlusionJson = new JSONObject();
+        occlusionJson.put("version", version);
+        occlusionJson.put("image_file", imageFile);
+        occlusionJson.put("width", width);
+        occlusionJson.put("height", height);
+        JSONArray frontJson = new JSONArray();
+        for(OcclusionItem item : shapeListFront){
+            frontJson.put(item.toJsonObject());
+        }
+        occlusionJson.put("shape_list_front", frontJson);
+        JSONArray backJson = new JSONArray();
+        for(OcclusionItem item : shapeListBack){
+            backJson.put(item.toJsonObject());
+        }
+        occlusionJson.put("shape_list_back", backJson);
+        return occlusionJson.toString(4);//indent the exported string
     }
 
     public OcclusionObject clone(){
