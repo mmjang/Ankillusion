@@ -1,9 +1,11 @@
+{{#Front}}
 <div id='front'>{{Front}}</div>
+{{/Front}}
 <div hidden id="occlusion_data">
-		{{Data}}
+    {{Data}}
 </div>
 <div id='occlusion_img'>
-	{{Image}}
+    {{Image}}
 </div>
 <canvas id="occlusion_canvas">
 </canvas>
@@ -14,7 +16,7 @@
             draw(occlusion_data.shape_list_front);
             //console.log('refresh')
         }
-       
+
         //console.log('window onload')
         var img_ele = document.querySelector('#occlusion_img img');
         if (img_ele.complete) {
@@ -30,23 +32,27 @@
 
 @@@
 
-<div id='front'>{{Back}}</div>
+{{#Front}}
+<div id='front'>{{Front}}</div>
+{{/Front}}
 <div hidden id="occlusion_data">
-  {{Data}}
+    {{Data}}
 </div>
 <div id='occlusion_img'>
-{{Image}}
+    {{Image}}
 </div>
 <canvas id="occlusion_canvas">
 </canvas>
-
+{{#Back}}
+<div id='back'>{{Back}}</div>
+{{/Back}}
 <script type="text/javascript">
  function refresh(){
       var occlusion_data = JSON.parse(document.querySelector("#occlusion_data").textContent);
       draw(occlusion_data.shape_list_back);
       //console.log('refresh')
   }
- 
+
   //console.log('window onload')
   var img_ele = document.querySelector('#occlusion_img img');
   if (img_ele.complete) {
@@ -76,7 +82,7 @@
 
         function makeDarker(hex){
             var vrgb = hexToRgb(hex);
-            return 'rgb(' + vrgb.r / 2 +',' + vrgb.g / 2 + ',' + vrgb.b / 2 +')'; 
+            return 'rgb(' + vrgb.r / 2 +',' + vrgb.g / 2 + ',' + vrgb.b / 2 +')';
 		}
 
         function ColorLuminance(hex, lum) {
@@ -109,18 +115,25 @@
             canvas.height = img.height;
             var scale = canvas.width / img.naturalWidth;
             var i;
-            
+
             for(i = 0; i < shapes.length; i ++){
-                
+
                 var shape = shapes[i];
+                if(!shape.highlight){
+                      shape.color = "#ff7d47";
+                }else{
+                      shape.color = "#e65100";
+                }
                 ctx.fillStyle = shape.color;
-                ctx.strokeStyle = shape.color;
-	            ctx.shadowColor = ColorLuminance(shape.color, -0.5);
-            	 ctx.shadowBlur = 10;
-                ctx.shadowOffsetX = 3;
-                ctx.shadowOffsetY = 5;
+
+			 //ctx.strokeStyle = "black";
+                //ctx.lineWidth = 10;
+	           //ctx.shadowColor = ColorLuminance(shape.color, -0.5);
+            	 //ctx.shadowBlur = 10;
+                //ctx.shadowOffsetX = 3;
+                //ctx.shadowOffsetY = 5;
                 var path = shape.data;
-                
+
                 if(path.length > 0){
                     ctx.beginPath();
                     ctx.moveTo(path[0][0] * scale, path[0][1] * scale);
@@ -147,31 +160,36 @@
 </script>
 <style>
 .card {
- font-family: arial;
- font-size: 20px;
- text-align: left;
- color: black;
- background-color: #eeeeee;
+ background:#d7e4dd
 }
 
-#front, #back{
-	text-align: center;
-    margin-bottom: 10px;
-    font-size:1.5em;
+#front,#back{
+     padding:0.2em;
+     text-align: left;
+     margin-bottom: 10px;
+     font-size:1.25em;
+	max-width: 95%;
+	display: block;
+     width:auto;
+     margin-left: auto;
+     margin-right: auto;
+     border           : 1px solid;
+     border-color     : #e5e6e9 #dfe0e4 #d0d1d5;
+     border-radius    : 5px;
+     background:#f8f8f8
+	/*box-shadow: 2px 4px 5px 0px rgba(0, 0, 0, 0.6);*/
+
 }
 
 #occlusion_img img{
-     max-width: 90%;
-	 display: block;
-     width:auto;
-     /*border: 1px solid white;*/
+     width: 95%;
+	display: block;
      margin-left: auto;
      margin-right: auto;
-
-     border-radius: 15px;
-     -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
-     -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
-     box-shadow: 2px 4px 5px 0px rgba(0, 0, 0, 0.6);
+     border           : 1px solid;
+     border-color     : #e5e6e9 #dfe0e4 #d0d1d5;
+     border-radius    : 8px;
+     /*box-shadow: 2px 4px 5px 0px rgba(0, 0, 0, 0.6);*/
 }
 
 #occlusion_canvas{
