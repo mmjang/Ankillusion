@@ -65,7 +65,11 @@ public class OcclusionCardModel {
     public boolean needAddModel(){
         long storedModelId = Settings.getInstance(context).getModelId();
         if(storedModelId > 0){
-            return false;
+            if(mAnkidroid.getApi().getModelName(storedModelId) == null){
+                return true;
+            }else{
+                return false;
+            }
         }else{
             Long mid = mAnkidroid.findModelIdByName(defaultModelName, FILEDS.length);
             if(mid == null){

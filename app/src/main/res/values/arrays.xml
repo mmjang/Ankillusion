@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="modes">
+        <item>Hide All - Reveal All</item>
+        <item>Hide One - Reveal One</item>
+        <item>Hide All - Reveal One</item>
+    </string-array>
+</resources>

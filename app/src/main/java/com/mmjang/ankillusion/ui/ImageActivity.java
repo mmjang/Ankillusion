@@ -1,42 +1,43 @@
 package com.mmjang.ankillusion.ui;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mmjang.ankillusion.R;
-import com.mmjang.ankillusion.anki.AnkiDroidHelper;
-import com.mmjang.ankillusion.anki.OcclusionCardModel;
+import com.mmjang.ankillusion.anki.AnkiOcclusionExporter;
 import com.mmjang.ankillusion.data.Constant;
 import com.mmjang.ankillusion.data.OcclusionExportType;
 import com.mmjang.ankillusion.data.OcclusionObject;
 import com.mmjang.ankillusion.data.OcclusionObjectListGenerator;
+import com.mmjang.ankillusion.data.OperationResult;
 import com.mmjang.ankillusion.data.Settings;
+import com.mmjang.ankillusion.utils.Utils;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.json.JSONException;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
-import java.util.Map;
 
-import cn.forward.androids.utils.ImageUtils;
 import cn.hzw.doodle.DoodleColor;
 import cn.hzw.doodle.DoodleOnTouchGestureListener;
 import cn.hzw.doodle.DoodlePen;
@@ -46,7 +47,6 @@ import cn.hzw.doodle.DoodleView;
 import cn.hzw.doodle.IDoodleListener;
 import cn.hzw.doodle.MyDoodleOnTouchGestureListener;
 import cn.hzw.doodle.core.IDoodle;
-import cn.hzw.doodle.core.IDoodleSelectableItem;
 import cn.hzw.doodle.occlusion.OcclusionItem;
 
 public class ImageActivity extends AppCompatActivity {
@@ -217,8 +217,15 @@ public class ImageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_edit_front_and_back_text:
+            case R.id.menu_done:
                 onEditFrontAndBackText();
+                break;
+            case R.id.menu_delete:
+                if(touchGestureListener != null && touchGestureListener.getSelectedItem()!=null){
+                    doodleView.removeItem(touchGestureListener.getSelectedItem());
+                }else{
+                    Toast.makeText(this, "No selected occlusion to delete!", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -228,63 +235,161 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void onEditFrontAndBackText() {
-        List<OcclusionItem> occlusionItemList = doodleView.getOcclusionList();
-        int height = doodleView.getDoodleBitmap().getHeight();
-        int width = doodleView.getDoodleBitmap().getWidth();
-        List<OcclusionObject> occlusionObjectList = OcclusionObjectListGenerator.gen(
-                1,
-                "image_test.jpg",
-                width,
-                height,
-                occlusionItemList,
-                OcclusionExportType.HIDE_ALL_REVEAL_ONE
+        setupNotesCreationDialog();
+    }
+
+
+    private String frontNoteString = "";
+    private String backNoteString = "";
+    private AnkiOcclusionExporter ankiOcclusionExporter;
+
+    private static final int CARD_CREATION_FINISHED = 50;
+    //async
+    @SuppressLint("HandlerLeak")
+    final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case CARD_CREATION_FINISHED:
+                    OperationResult or = (OperationResult) msg.obj;
+                    if(or.isSuccess()){
+                        Toast.makeText(ImageActivity.this, "Cards added", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Utils.showMessage(
+                                ImageActivity.this,
+                                or.getMessage()
+                        );
+                    }
+                    break;
+                default:
+                    ;
+            }
+        }
+    };
+
+
+    private void setupNotesCreationDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ImageActivity.this);
+        LayoutInflater inflater = ImageActivity.this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_add_note, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Add Note(s) to Ankidroid");
+        //set views
+        final Spinner deckSpinner = dialogView.findViewById(R.id.deck_spinner);
+        final Spinner modeSpinner = dialogView.findViewById(R.id.mode_spinner);
+        final EditText editTextFrontNode = dialogView.findViewById(R.id.edittext_front_note);
+        final EditText editTExtBackNote = dialogView.findViewById(R.id.edittext_back_note);
+        //写入已存笔记
+        editTextFrontNode.setText(frontNoteString);
+        editTExtBackNote.setText(backNoteString);
+        //init exporter
+        if(ankiOcclusionExporter == null){
+            ankiOcclusionExporter = new AnkiOcclusionExporter(
+                    ImageActivity.this,
+                    originalBitmap
+            );
+        }
+        //init deck spinner
+        OperationResult deckOpResult = ankiOcclusionExporter.getDeckList();
+        if(!deckOpResult.isSuccess()){
+            Utils.showMessage(ImageActivity.this, deckOpResult.getMessage());
+            return;
+        }
+        final List<String> deckList = (List<String>) deckOpResult.getResult();
+        final String[] deckArr = new String[deckList.size()];
+        for (int i = 0; i < deckList.size(); i++) {
+            deckArr[i] = deckList.get(i);
+        }
+        ArrayAdapter<String> deckSpinnerAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, deckArr);
+        deckSpinner.setAdapter(deckSpinnerAdapter);
+        deckSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        String storedDeckName = Settings.getInstance(ImageActivity.this).getDeckName();
+        if(!Settings.getInstance(ImageActivity.this).getDeckName().isEmpty()){
+            for(int i = 0; i < deckList.size(); i ++){
+                if(deckList.get(i).equals(storedDeckName)){
+                    deckSpinner.setSelection(i);
+                }
+            }
+        }
+        //init mode spinner
+        modeSpinner.setSelection(Settings.getInstance(ImageActivity.this).getCreationMode());
+        dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //start card creation
+                if(doodleView == null || originalBitmap == null){
+                    Utils.showMessage(ImageActivity.this, "Illegal Operation;\n Crop the image first!");
+                    return ;
+                }
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<OcclusionItem> occlusionItemList = doodleView.getOcclusionList();
+                        int height = doodleView.getDoodleBitmap().getHeight();
+                        int width = doodleView.getDoodleBitmap().getWidth();
+                        String deckName = deckList.get(deckSpinner.getSelectedItemPosition());
+                        //save deckname
+                        Settings.getInstance(ImageActivity.this).setDeckName(deckName);
+                        //save mode
+                        Settings.getInstance(ImageActivity.this).setCreationMode(modeSpinner.getSelectedItemPosition());
+                        int mode = modeSpinner.getSelectedItemPosition();
+                        OcclusionExportType type = null;
+                        if(mode == 0){
+                            type = OcclusionExportType.HIDE_ALL_REVEAL_ALL;
+                        }
+                        if(mode == 1){
+                            type = OcclusionExportType.HIDE_ONE_REVEAL_ONE;
+                        }
+                        if(mode == 2){
+                            type = OcclusionExportType.HIDE_ALL_REVEAL_ONE;
+                        }
+
+                        List<OcclusionObject> occlusionObjectList = OcclusionObjectListGenerator.gen(
+                                1,
+                                "place_holder.jpg",
+                                width,
+                                height,
+                                occlusionItemList,
+                                type
+                        );
+
+                        OperationResult orDeckId = ankiOcclusionExporter.getDeckIdByName(deckName);
+                        //failed to get deck id
+                        if(!orDeckId.isSuccess()){
+                            Message message = mHandler.obtainMessage();
+                            message.obj = orDeckId;
+                            message.what = CARD_CREATION_FINISHED;
+                            mHandler.sendMessage(message);
+                            return ;
+                        }
+
+                        OperationResult orExport = ankiOcclusionExporter.export(
+                                occlusionObjectList,
+                                (Long) orDeckId.getResult()
+                        );
+
+                        Message message = mHandler.obtainMessage();
+                        message.obj = orExport;
+                        message.what = CARD_CREATION_FINISHED;
+                        mHandler.sendMessage(message);
+                    }
+                });
+                thread.start();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+
+        //退出对话框时保存笔记
+        b.setOnDismissListener(
+                new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        frontNoteString = editTextFrontNode.getText().toString();
+                        backNoteString = editTExtBackNote.getText().toString();
+                    }
+                }
         );
-
-        AnkiDroidHelper ankiDroidHelper = new AnkiDroidHelper(this);
-        OcclusionCardModel model = new OcclusionCardModel(this, ankiDroidHelper);
-        if(model.needAddModel()){
-            boolean success = model.addModel();
-            boolean need = model.needAddModel();
-        }
-        Map<Long, String> deckList = ankiDroidHelper.getApi().getDeckList();
-        Long deckid= deckList.keySet().iterator().next();
-
-        FileOutputStream fOut = null;
-        try {
-            File root = new File(Environment.getExternalStorageDirectory() + "/AnkiDroid/collection.media/");
-            if(!root.exists()) {
-                root.mkdirs();
-            }
-            File sdImageMainDirectory = new File(root, "image_test.jpg");
-            //outputFileUri = Uri.fromFile(sdImageMainDirectory);
-            fOut = new FileOutputStream(sdImageMainDirectory);
-        } catch (Exception e) {
-
-        }
-        try {
-            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        for(OcclusionObject obj : occlusionObjectList){
-            try {
-                String exportString = obj.toJsonString();
-                //exportString = exportString + "";
-                ankiDroidHelper.getApi().addNote(
-                        Settings.getInstance(this).getModelId(),
-                        deckid,
-                        new String[] {"<img src='image_test.jpg'/>", exportString,
-                            "",""},
-                        null
-                );
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
+        b.show();
     }
 }

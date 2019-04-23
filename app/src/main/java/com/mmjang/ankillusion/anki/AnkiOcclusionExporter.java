@@ -21,27 +21,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AnkiOcclusionExporter implements IOcclusionExporter{
+public class AnkiOcclusionExporter{
 
     private Activity mActivity;
     private AnkiDroidHelper mAnkidroid;
     private Bitmap mBitmap;
-    private OcclusionExportType mType;
-    private Long mDeckId;
     private Map<Long, String> deckMap;
 
-    public AnkiOcclusionExporter(Long deckId, Activity activity, Bitmap bitmap, OcclusionExportType type){
+    public AnkiOcclusionExporter(Activity activity, Bitmap bitmap){
         mActivity = activity;
         mAnkidroid = new AnkiDroidHelper(activity);
         mBitmap = bitmap;
-        mType = type;
-        mDeckId = deckId;
     }
 
     //obj: List<String>
     public OperationResult getDeckList(){
         try {
-            deckMap = mAnkidroid.getApi().getDeckList();
+            if(deckMap == null) {
+                deckMap = mAnkidroid.getApi().getDeckList();
+            }
         }catch (Exception e){
             return new OperationResult(false, "Error when read deck list: \n" + e.getLocalizedMessage());
         }
@@ -52,8 +50,22 @@ public class AnkiOcclusionExporter implements IOcclusionExporter{
         return new OperationResult(true, "Ok", deckList);
     }
 
-    @Override
-    public OperationResult export(List<OcclusionObject> occlusionObjectList) {
+    public OperationResult getDeckIdByName(String deckName){
+        if(deckMap == null){
+            OperationResult or = getDeckList();
+            if(!or.isSuccess()){
+                return or;
+            }
+        }
+        for(Long id : deckMap.keySet()){
+            if (deckMap.get(id).equals(deckName)) {
+                return new OperationResult(true, "Ok", id);
+            }
+        }
+        return new OperationResult(false, "No deck named " + deckName +" found!!!");
+    }
+
+    public OperationResult export(List<OcclusionObject> occlusionObjectList, Long mDeckId) {
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss",
                         Locale.getDefault()).format(new Date());
