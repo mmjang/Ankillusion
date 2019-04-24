@@ -33,4 +33,5 @@
     <string name="title_choose">确定</string>
     <string name="title_cancel">取消</string>
     <string name="label_settings">设置</string>
+    <string name="documentation_url">https://github.com/mmjang/Ankillusion/blob/master/documentation-cn.md</string>
 </resources>
