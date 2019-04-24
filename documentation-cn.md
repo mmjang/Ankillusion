@@ -4,7 +4,7 @@
 
 ## 简介
 
-“Anki 涂鸦制卡”可快速地在图片上进行知识点遮挡并制作记忆卡片。
+“Anki 涂鸦制卡”([下载地址](https://github.com/mmjang/Ankillusion/releases/download/v1.1.0/Anki.Doodle.v1.1.0.apk))可快速地在图片上进行知识点遮挡并制作记忆卡片。
 
 图片遮挡流程：
 

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-**Anki Doodle** helps you create image occlusion flashcards.
+**Anki Doodle**(([Download](https://github.com/mmjang/Ankillusion/releases/download/v1.1.0/Anki.Doodle.v1.1.0.apk))) helps you create image occlusion flashcards.
 
 Image occlusion:
 
