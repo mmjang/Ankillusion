@@ -65,7 +65,7 @@ public class AnkiOcclusionExporter{
         return new OperationResult(false, "No deck named " + deckName +" found!!!");
     }
 
-    public OperationResult export(List<OcclusionObject> occlusionObjectList, Long mDeckId) {
+    public OperationResult export(List<OcclusionObject> occlusionObjectList, Long mDeckId, String frontString, String backString) {
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss",
                         Locale.getDefault()).format(new Date());
@@ -106,7 +106,7 @@ public class AnkiOcclusionExporter{
                         Settings.getInstance(mActivity).getModelId(),
                         mDeckId,
                         new String[] {String.format("<img src='%s'/>", imageFileName), exportString,
-                                "",""},
+                                frontString, backString},
                         null
                 );
             } catch (JSONException e) {

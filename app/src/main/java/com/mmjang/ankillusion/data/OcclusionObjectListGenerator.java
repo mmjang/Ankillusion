@@ -32,6 +32,21 @@ public class OcclusionObjectListGenerator {
             occlusionObjectList.add(occlusionObject);
         }
         if(expType == OcclusionExportType.HIDE_ONE_REVEAL_ONE){
+            //when no occlusion, make one card.
+            if(occlusionItemList.size() == 0){
+                List<OcclusionItem> frontList = new ArrayList<>();
+                List<OcclusionItem> backList = new ArrayList<>();
+                OcclusionObject occlusionObject = new OcclusionObject(
+                        version,
+                        img,
+                        width,
+                        height,
+                        frontList,
+                        backList
+                );
+                occlusionObjectList.add(occlusionObject);
+            }
+
             for(OcclusionItem occlusionItem : occlusionItemList){
                 occlusionItem.highlight = true;
                 List<OcclusionItem> frontList = new ArrayList<>();
@@ -49,6 +64,22 @@ public class OcclusionObjectListGenerator {
             }
         }
         if(expType == OcclusionExportType.HIDE_ALL_REVEAL_ONE){
+
+            //when no occlusion, make one card.
+            if(occlusionItemList.size() == 0){
+                List<OcclusionItem> frontList = new ArrayList<>();
+                List<OcclusionItem> backList = new ArrayList<>();
+                OcclusionObject occlusionObject = new OcclusionObject(
+                        version,
+                        img,
+                        width,
+                        height,
+                        frontList,
+                        backList
+                );
+                occlusionObjectList.add(occlusionObject);
+            }
+
             for(int i = 0; i < occlusionItemList.size(); i ++){
                 List<OcclusionItem> frontList = new ArrayList<>();
                 List<OcclusionItem> backList = new ArrayList<>();

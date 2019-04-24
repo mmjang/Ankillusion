@@ -106,12 +106,12 @@ public class ImageActivity extends AppCompatActivity {
                             //if(cropImageView.)
                             Rect rect = cropImageView.getCropRect();
                             double w = 0, h = 0;
-                            if(rect.width() > Constant.MAX_IMAGE_WIDTH){
+                            if(rect.height() > Constant.MAX_IMAGE_WIDTH){
                                 w = Constant.MAX_IMAGE_WIDTH;
-                                h = w * ((double) rect.height()/ (double) rect.width());
+                                h = w * ((double) rect.width()/ (double) rect.height());
                             }else{
-                                w = rect.width();
-                                h = rect.height();
+                                w = rect.height();
+                                h = rect.width();
                             }
 
                             cropImageView.getCroppedImageAsync((int) w, (int) h);
@@ -366,7 +366,9 @@ public class ImageActivity extends AppCompatActivity {
 
                         OperationResult orExport = ankiOcclusionExporter.export(
                                 occlusionObjectList,
-                                (Long) orDeckId.getResult()
+                                (Long) orDeckId.getResult(),
+                                editTextFrontNode.getText().toString(),
+                                editTExtBackNote.getText().toString()
                         );
 
                         Message message = mHandler.obtainMessage();
