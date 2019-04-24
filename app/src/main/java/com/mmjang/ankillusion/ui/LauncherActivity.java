@@ -70,6 +70,16 @@ public class LauncherActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        btnSettings.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LauncherActivity.this, SettingsActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
     private void ensurePermissions() {

@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -60,6 +61,8 @@ public class ImageActivity extends AppCompatActivity {
     ImageButton btnClose;
     Bitmap originalBitmap;
     private DoodleOnTouchGestureListener touchGestureListener;
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,9 +130,9 @@ public class ImageActivity extends AppCompatActivity {
                         //by default, get the whole image;
                         Rect rect = cropImageView.getWholeImageRect();
                         //cropImageView.getCropWindowRect()
-                        Toast.makeText(ImageActivity.this,
-                                "width: " + rect.width() + "height: " + rect.height()
-                                , Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ImageActivity.this,
+//                                "width: " + rect.width() + "height: " + rect.height()
+//                                , Toast.LENGTH_SHORT).show();
                         //cropImageView.setCropRect(rect);
                     }
                 }
@@ -153,11 +156,12 @@ public class ImageActivity extends AppCompatActivity {
         btnRotate = findViewById(R.id.btn_rotate);
         btnCrop = findViewById(R.id.btn_crop);
         btnClose = findViewById(R.id.btn_close);
+        progressBar = findViewById(R.id.image_progress);
     }
 
     private void setUpDoodleView(Bitmap bitmap) {
-        originalBitmap = bitmap.copy(bitmap.getConfig(), true);
-        Toast.makeText(this, "width: " + bitmap.getWidth() + "height: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
+        originalBitmap = bitmap.copy(bitmap.getConfig(), false);
+        //Toast.makeText(this, "width: " + bitmap.getWidth() + "height: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
 
         doodleView = new DoodleView(this, bitmap, new IDoodleListener() {
             @Override
@@ -224,7 +228,7 @@ public class ImageActivity extends AppCompatActivity {
                 if(touchGestureListener != null && touchGestureListener.getSelectedItem()!=null){
                     doodleView.removeItem(touchGestureListener.getSelectedItem());
                 }else{
-                    Toast.makeText(this, "No selected occlusion to delete!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_msg_no_selected_occlusion, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case android.R.id.home:
@@ -251,9 +255,10 @@ public class ImageActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CARD_CREATION_FINISHED:
+                    progressBar.setVisibility(View.GONE);
                     OperationResult or = (OperationResult) msg.obj;
                     if(or.isSuccess()){
-                        Toast.makeText(ImageActivity.this, "Cards added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImageActivity.this, R.string.msg_cards_added, Toast.LENGTH_SHORT).show();
                     }else{
                         Utils.showMessage(
                                 ImageActivity.this,
@@ -269,11 +274,16 @@ public class ImageActivity extends AppCompatActivity {
 
 
     private void setupNotesCreationDialog() {
+        //start card creation
+        if(doodleView == null || originalBitmap == null){
+            Utils.showMessage(ImageActivity.this, getString(R.string.error_msg_crop_the_image_first));
+            return ;
+        }
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ImageActivity.this);
         LayoutInflater inflater = ImageActivity.this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_add_note, null);
         dialogBuilder.setView(dialogView);
-        dialogBuilder.setTitle("Add Note(s) to Ankidroid");
+        dialogBuilder.setTitle(R.string.msg_add_cards_to_ankidroid);
         //set views
         final Spinner deckSpinner = dialogView.findViewById(R.id.deck_spinner);
         final Spinner modeSpinner = dialogView.findViewById(R.id.mode_spinner);
@@ -317,11 +327,7 @@ public class ImageActivity extends AppCompatActivity {
         modeSpinner.setSelection(Settings.getInstance(ImageActivity.this).getCreationMode());
         dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //start card creation
-                if(doodleView == null || originalBitmap == null){
-                    Utils.showMessage(ImageActivity.this, "Illegal Operation;\n Crop the image first!");
-                    return ;
-                }
+                progressBar.setVisibility(View.VISIBLE);
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {

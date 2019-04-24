@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deck"
+        android:text="@string/textview_deck"
         />
 
     <Spinner
@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mode"
+        android:text="@string/textview_mode"
         />
 
     <Spinner
@@ -35,7 +35,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Note of Front Side"
+        android:text="@string/textview_note_of_front_side"
         />
 
     <EditText
@@ -47,7 +47,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Note of Back Side"
+        android:text="@string/textview_note_of_back_side"
         />
 
     <EditText
@@ -55,12 +55,4 @@
         android:layout_height="wrap_content"
         android:id="@+id/edittext_back_note"
         />
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/btn_confirm_note_creation"-->
-        <!--android:text="Confirm"-->
-        <!--/>-->
-
 </LinearLayout>

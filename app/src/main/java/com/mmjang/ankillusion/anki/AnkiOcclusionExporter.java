@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.mmjang.ankillusion.R;
 import com.mmjang.ankillusion.data.IOcclusionExporter;
 import com.mmjang.ankillusion.data.OcclusionExportType;
 import com.mmjang.ankillusion.data.OcclusionObject;
@@ -41,7 +42,7 @@ public class AnkiOcclusionExporter{
                 deckMap = mAnkidroid.getApi().getDeckList();
             }
         }catch (Exception e){
-            return new OperationResult(false, "Error when read deck list: \n" + e.getLocalizedMessage());
+            return new OperationResult(false, mActivity.getString(R.string.error_msg_read_deck_list) + e.getLocalizedMessage());
         }
         List<String> deckList = new ArrayList<>();
         for(String d : deckMap.values()){
@@ -62,7 +63,7 @@ public class AnkiOcclusionExporter{
                 return new OperationResult(true, "Ok", id);
             }
         }
-        return new OperationResult(false, "No deck named " + deckName +" found!!!");
+        return new OperationResult(false, String.format(mActivity.getString(R.string.error_msg_no_deck_found),deckName));
     }
 
     public OperationResult export(List<OcclusionObject> occlusionObjectList, Long mDeckId, String frontString, String backString) {
@@ -79,7 +80,7 @@ public class AnkiOcclusionExporter{
                 boolean success = model.addModel();
             }
         }catch (Exception e){
-            return new OperationResult(false, "Error When add model: \n" + e.getLocalizedMessage());
+            return new OperationResult(false, mActivity.getString(R.string.error_msg_add_model) + e.getLocalizedMessage());
         }
 
         FileOutputStream fOut = null;
@@ -95,7 +96,7 @@ public class AnkiOcclusionExporter{
             fOut.flush();
             fOut.close();
         } catch (Exception e) {
-            return new OperationResult(false, "Error when write image file: \n" + e.getLocalizedMessage());
+            return new OperationResult(false, mActivity.getString(R.string.error_msg_write_image) + e.getLocalizedMessage());
         }
 
         for(OcclusionObject obj : occlusionObjectList){
@@ -110,9 +111,9 @@ public class AnkiOcclusionExporter{
                         null
                 );
             } catch (JSONException e) {
-                return new OperationResult(false, "Error generating json data: \n" + e.getLocalizedMessage());
+                return new OperationResult(false, mActivity.getString(R.string.error_msg_generating_json) + e.getLocalizedMessage());
             } catch (Exception e){
-                return new OperationResult(false,  "Error write cards: \n" + e.getLocalizedMessage());
+                return new OperationResult(false,  mActivity.getString(R.string.error_msg_write_cards) + e.getLocalizedMessage());
             }
         }
 

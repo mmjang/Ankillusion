@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="modes">
+        <item>全遮全显</item>
+        <item>单遮单显</item>
+        <item>全遮单显</item>
+    </string-array>
+</resources>

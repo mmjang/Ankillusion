@@ -4,14 +4,14 @@
 
     <item
         android:id="@+id/menu_delete"
-        android:title="delete selected occlusion"
+        android:title="@string/menu_delete_selected_occlusion"
         android:icon="@drawable/ic_baseline_delete_forever_24px"
         app:showAsAction="always"
         />
 
     <item
         android:id="@+id/menu_done"
-        android:title="create card(s)"
+        android:title="@string/menu_create_card_s"
         android:icon="@drawable/ic_baseline_done_24px"
         app:showAsAction="always"
         />

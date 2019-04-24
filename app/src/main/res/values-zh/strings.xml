@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anki 涂鸦制卡</string>
+    <string name="msg_no_storage_permission">
+        本应用未获得存储读写权限，无法正常工作.\n
+        请在应用权限管理手动授予权限.
+    </string>
+
+    <string name="msg_no_anki_api">
+        无法访问 Ankidroid API. 请确保：
+        已安装 Ankidroid; \n
+        Ankidroid 高级设置中的“启用 Ankidroid API”已勾选; \n
+        在应用权限管理中授予本应用“读写 Ankidroid 数据库”权限; \n
+    </string>
+    <string name="textview_deck">牌组</string>
+    <string name="textview_mode">制卡模式</string>
+    <string name="textview_note_of_front_side">正面笔记</string>
+    <string name="textview_note_of_back_side">反面笔记</string>
+    <string name="menu_delete_selected_occlusion">删除所选遮挡区域</string>
+    <string name="menu_create_card_s">制卡</string>
+    <string name="error_msg_read_deck_list">读取牌组列表时出错：\n</string>
+    <string name="error_msg_no_deck_found">未找到名为(%s)的牌组</string>
+    <string name="error_msg_add_model">添加模板时出错: \n</string>
+    <string name="error_msg_write_image">向 Ankidroid 写入图片时出错: \n</string>
+    <string name="error_msg_generating_json">生成 json 数据时出错: \n</string>
+    <string name="error_msg_write_cards">写入卡片时出错: \n</string>
+    <string name="error_msg_no_selected_occlusion">请先选定要删除的区域!</string>
+    <string name="msg_cards_added">制卡成功</string>
+    <string name="msg_add_cards_to_ankidroid">输出卡片到 Ankidroid</string>
+    <string name="error_msg_crop_the_image_first">请先使用底部按钮裁剪图片！</string>
+    <string name="rectangle_occlusion_color">矩形区域颜色</string>
+    <string name="rectangle_highlight_color">矩形区域高亮颜色</string>
+    <string name="title_choose">确定</string>
+    <string name="title_cancel">取消</string>
+    <string name="label_settings">设置</string>
+</resources>

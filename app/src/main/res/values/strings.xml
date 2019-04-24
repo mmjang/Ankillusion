@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ankillusion</string>
+    <string name="app_name">Anki Doodle</string>
     <string name="msg_no_storage_permission">
         You have denied this app\'s access to external storage, so we cannot make occlusion cards for you.\n
         Please grant this permission manually at application settings page.\n
@@ -11,4 +11,25 @@
         In the advanced settings of Ankidroid, You have \"Enable Ankidroid API\" checked.\n
         You have grant the permission "Read And Write Ankidroid Database" in this app\' settings page.
     </string>
+    <string name="textview_deck">Deck</string>
+    <string name="textview_mode">Mode</string>
+    <string name="textview_note_of_front_side">Note of Front Side</string>
+    <string name="textview_note_of_back_side">Note of Back Side</string>
+    <string name="menu_delete_selected_occlusion">delete selected occlusion</string>
+    <string name="menu_create_card_s">create card(s)</string>
+    <string name="error_msg_read_deck_list">Error when read deck list:</string>
+    <string name="error_msg_no_deck_found">No deck named %s found!</string>
+    <string name="error_msg_add_model">Error When add model:</string>
+    <string name="error_msg_write_image">Error when write image file:</string>
+    <string name="error_msg_generating_json">Error generating json data:</string>
+    <string name="error_msg_write_cards">Error write cards:</string>
+    <string name="error_msg_no_selected_occlusion">No selected occlusion to delete!</string>
+    <string name="msg_cards_added">Card(s) added</string>
+    <string name="msg_add_cards_to_ankidroid">Add Card(s) to Ankidroid</string>
+    <string name="error_msg_crop_the_image_first">Illegal Operation;  Crop the image first!</string>
+    <string name="rectangle_occlusion_color">Rectangle Color</string>
+    <string name="rectangle_highlight_color">Rectangle Highlight Color</string>
+    <string name="title_choose">Choose</string>
+    <string name="title_cancel">Cancel</string>
+    <string name="label_settings">Settings</string>
 </resources>

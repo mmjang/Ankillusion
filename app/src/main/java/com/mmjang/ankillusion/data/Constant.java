@@ -9,8 +9,7 @@ import com.mmjang.ankillusion.R;
 import com.mmjang.ankillusion.utils.Utils;
 
 public class Constant {
-    public static final String DEFAULT_OCCLUSION_COLOR = Utils.color2Hex(
-            MyApplication.getContext().getResources().getColor(R.color.colorPrimaryDark));//"#fce77d";
+    public static final String DEFAULT_OCCLUSION_COLOR = "#0288d1";//"#fce77d";
     public static final String DEFAULT_OCCLUSION_COLOR_HIGHLIGHT = Utils.color2Hex(
             MyApplication.getContext().getResources().getColor(R.color.colorAccent)); //"#f96167";
     public static final String ANKI_PACKAGE_NAME = "com.ichi2.anki";
