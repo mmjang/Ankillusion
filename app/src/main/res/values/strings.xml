@@ -17,12 +17,12 @@
     <string name="textview_note_of_back_side">Note of Back Side</string>
     <string name="menu_delete_selected_occlusion">delete selected occlusion</string>
     <string name="menu_create_card_s">create card(s)</string>
-    <string name="error_msg_read_deck_list">Error when read deck list:</string>
+    <string name="error_msg_read_deck_list">Error when read deck list, you may have to open Ankidroid first:</string>
     <string name="error_msg_no_deck_found">No deck named %s found!</string>
-    <string name="error_msg_add_model">Error When add model:</string>
+    <string name="error_msg_add_model">Error When add model, you may have to open Ankidroid first:</string>
     <string name="error_msg_write_image">Error when write image file:</string>
     <string name="error_msg_generating_json">Error generating json data:</string>
-    <string name="error_msg_write_cards">Error write cards:</string>
+    <string name="error_msg_write_cards">Error write cards, you may have to open Ankidroid first:</string>
     <string name="error_msg_no_selected_occlusion">No selected occlusion to delete!</string>
     <string name="msg_cards_added">Card(s) added</string>
     <string name="msg_add_cards_to_ankidroid">Add Card(s) to Ankidroid</string>
@@ -37,7 +37,8 @@
     <string name="textview_about_information">
         Author: <a href="https://mmjang.com">mmjang</a>\n
         Source Code: <a href="https://github.com/mmjang/Ankillusion">Github Repo</a>\n
-        Email: pheiztu@foxmail.com\n\n
+        Email: pheiztu@foxmail.com\n
+        WeChat: Cc966200\n\n
         Acknowledgements\n
         1993hzw\'s <a href='https://github.com/1993hzw/Doodle'>Doodle</a>\n
         duanhong169\'s <a href='https://github.com/duanhong169/ColorPicker'>ColorPicker</a>

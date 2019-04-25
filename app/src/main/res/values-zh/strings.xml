@@ -18,9 +18,9 @@
     <string name="textview_note_of_back_side">反面笔记</string>
     <string name="menu_delete_selected_occlusion">删除所选遮挡区域</string>
     <string name="menu_create_card_s">制卡</string>
-    <string name="error_msg_read_deck_list">读取牌组列表时出错：\n</string>
+    <string name="error_msg_read_deck_list">读取牌组列表时出错，请尝试先打开 Ankidroid：\n</string>
     <string name="error_msg_no_deck_found">未找到名为(%s)的牌组</string>
-    <string name="error_msg_add_model">添加模板时出错: \n</string>
+    <string name="error_msg_add_model">添加模板时出错，请尝试先打开 Ankidroid: \n</string>
     <string name="error_msg_write_image">向 Ankidroid 写入图片时出错: \n</string>
     <string name="error_msg_generating_json">生成 json 数据时出错: \n</string>
     <string name="error_msg_write_cards">写入卡片时出错: \n</string>
@@ -38,7 +38,8 @@
     <string name="textview_about_information">
         作者: <a href="https://mmjang.com">mmjang</a>\n
         源码: <a href="https://github.com/mmjang/Ankillusion">Github Repo</a>\n
-        Email: pheiztu@foxmail.com\n\n
+        Email: pheiztu@foxmail.com\n
+        微信: Cc966200\n\n
         致谢\n
         1993hzw <a href='https://github.com/1993hzw/Doodle'>Doodle</a>\n
         duanhong169 <a href='https://github.com/duanhong169/ColorPicker'>ColorPicker</a>
