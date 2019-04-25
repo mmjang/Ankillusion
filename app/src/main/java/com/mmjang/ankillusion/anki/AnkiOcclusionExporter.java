@@ -41,14 +41,15 @@ public class AnkiOcclusionExporter{
             if(deckMap == null) {
                 deckMap = mAnkidroid.getApi().getDeckList();
             }
+            List<String> deckList = new ArrayList<>();
+            for(String d : deckMap.values()){
+                deckList.add(d);
+            }
+            return new OperationResult(true, "Ok", deckList);
         }catch (Exception e){
             return new OperationResult(false, mActivity.getString(R.string.error_msg_read_deck_list) + e.getLocalizedMessage());
         }
-        List<String> deckList = new ArrayList<>();
-        for(String d : deckMap.values()){
-            deckList.add(d);
-        }
-        return new OperationResult(true, "Ok", deckList);
+
     }
 
     public OperationResult getDeckIdByName(String deckName){
