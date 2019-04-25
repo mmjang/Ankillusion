@@ -109,9 +109,9 @@ public class ImageActivity extends AppCompatActivity {
                             //if(cropImageView.)
                             Rect rect = cropImageView.getCropRect();
                             double w = 0, h = 0;
-                            if(rect.height() > Constant.MAX_IMAGE_WIDTH){
+                            if(rect.width() > Constant.MAX_IMAGE_WIDTH){
                                 w = Constant.MAX_IMAGE_WIDTH;
-                                h = w * ((double) rect.width()/ (double) rect.height());
+                                h = w * ((double) rect.height()/ (double) rect.width());
                                 cropImageView.getCroppedImageAsync((int) w, (int) h);
                             }else{
                                 cropImageView.getCroppedImageAsync();
