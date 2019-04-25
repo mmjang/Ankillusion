@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.AboutActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_launcher"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:id="@+id/textview_app_name_and_version"
+                />
+
+            <TextView
+                android:textIsSelectable="true"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginTop="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_about_information"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:id="@+id/textview_about_information"
+                android:linksClickable="true"
+                />
+
+            <TextView
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:text="@string/tv_donate"
+                />
+
+            <TextView
+                android:layout_marginBottom="16dp"
+                android:textIsSelectable="true"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/for_users_in_china"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:linksClickable="true"
+                />
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/alipay"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/btn_alipay"
+                />
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textIsSelectable="true"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/for_international_users"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:linksClickable="true"
+                />
+
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/buymeacoffee"
+                android:layout_marginBottom="32dp"
+                android:id="@+id/btn_buymeacoffee"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -34,4 +34,16 @@
     <string name="title_cancel">取消</string>
     <string name="label_settings">设置</string>
     <string name="documentation_url">https://github.com/mmjang/Ankillusion/blob/master/documentation-cn.md</string>
+    <string name="str_menu_about">关于</string>
+    <string name="textview_about_information">
+        作者: <a href="https://mmjang.com">mmjang</a>\n
+        源码: <a href="https://github.com/mmjang/Ankillusion">Github Repo</a>\n
+        Email: pheiztu@foxmail.com\n\n
+        致谢\n
+        1993hzw <a href='https://github.com/1993hzw/Doodle'>Doodle</a>\n
+        duanhong169 <a href='https://github.com/duanhong169/ColorPicker'>ColorPicker</a>
+    </string>
+    <string name="tv_donate">打赏</string>
+    <string name="for_users_in_china">支付宝打赏按钮:</string>
+    <string name="for_international_users">国际用户打赏按钮:</string>
 </resources>
