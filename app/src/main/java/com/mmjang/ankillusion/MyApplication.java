@@ -3,9 +3,6 @@ package com.mmjang.ankillusion;
 import android.app.Application;
 import android.content.Context;
 
-import com.tencent.bugly.Bugly;
-import com.tencent.bugly.crashreport.CrashReport;
-
 public class MyApplication extends Application{
     private static Context context;
     private static Application application;
@@ -15,7 +12,7 @@ public class MyApplication extends Application{
         super.onCreate();
         context = getApplicationContext();
         application = this;
-        Bugly.init(getApplicationContext(), "77a9755f20", false);
+        //Bugly.init(getApplicationContext(), "77a9755f20", false);
     }
 
     public static Context getContext() {

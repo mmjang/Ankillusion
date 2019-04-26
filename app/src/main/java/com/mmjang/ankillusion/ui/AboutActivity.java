@@ -30,40 +30,40 @@ public class AboutActivity extends AppCompatActivity {
         mTextViewAboutInformation = findViewById(R.id.textview_about_information);
         mTextViewAboutInformation.setMovementMethod(LinkMovementMethod.getInstance());
 
-        ImageView btnBuymeacoffee = findViewById(R.id.btn_buymeacoffee);
-        ImageView btnAlipay = findViewById(R.id.btn_alipay);
-
-        btnBuymeacoffee.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String url = "https://www.buymeacoffee.com/w05dHCN";
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(url));
-                        startActivity(i);
-                    }
-                }
-        );
-
-        btnAlipay.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.VIEW");
-                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        String payUrl = "HTTPS://QR.ALIPAY.COM/FKX011406PTCIHXZJPW7A1";
-                        //String payUrl = "HTTPS://QR.ALIPAY.COM/A6X00376AFOZWZUHWTDNDF4"; //any
-                        intent.setData(Uri.parse("alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=" + payUrl));
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
-                        } else {
-                            intent.setData(Uri.parse(payUrl.toLowerCase()));
-                            startActivity(intent);
-                        }
-                    }
-                }
-        );
+//        ImageView btnBuymeacoffee = findViewById(R.id.btn_buymeacoffee);
+//        ImageView btnAlipay = findViewById(R.id.btn_alipay);
+//
+//        btnBuymeacoffee.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String url = "https://www.buymeacoffee.com/w05dHCN";
+//                        Intent i = new Intent(Intent.ACTION_VIEW);
+//                        i.setData(Uri.parse(url));
+//                        startActivity(i);
+//                    }
+//                }
+//        );
+//
+//        btnAlipay.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent();
+//                        intent.setAction("android.intent.action.VIEW");
+//                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        String payUrl = "HTTPS://QR.ALIPAY.COM/FKX011406PTCIHXZJPW7A1";
+//                        //String payUrl = "HTTPS://QR.ALIPAY.COM/A6X00376AFOZWZUHWTDNDF4"; //any
+//                        intent.setData(Uri.parse("alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=" + payUrl));
+//                        if (intent.resolveActivity(getPackageManager()) != null) {
+//                            startActivity(intent);
+//                        } else {
+//                            intent.setData(Uri.parse(payUrl.toLowerCase()));
+//                            startActivity(intent);
+//                        }
+//                    }
+//                }
+//        );
     }
 
     private TextView mAppNameAndVersion;

@@ -35,7 +35,6 @@ import com.mmjang.ankillusion.data.OcclusionObjectListGenerator;
 import com.mmjang.ankillusion.data.OperationResult;
 import com.mmjang.ankillusion.data.Settings;
 import com.mmjang.ankillusion.utils.Utils;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.List;
@@ -75,8 +74,6 @@ public class ImageActivity extends AppCompatActivity {
         //cropImageView.setImageBitmap(bitmap);
         handleIntent();
         setUpListener();
-
-        //CrashReport.testJavaCrash();
     }
 
     private void handleIntent() {
