@@ -16,7 +16,7 @@ Flashcards review：
 
 This app must be used with Ankidroid([Download](https://play.google.com/store/apps/details?id=com.ichi2.anki)), the android version of flashcard software Anki. Before use **Anki Doodle**, please make sure you have Ankidroid installed.
 
-## 特性
+## Features
 
 Can handle images from Gallery, Camera and Sharing from other apps;
 
@@ -38,3 +38,13 @@ Support 3 card-creation modes：
 
 ![](etc/pic/mode_3.png)
 
+## Common Questions
+
+### Why can't I sync the images to the desktop version of Anki?
+
+Due to implementation details of Ankidroid, when add cards via its api, it doesn't check for
+media file links in them, which makes the images files not included in the media database and
+can't be synced.
+
+To solve the problem, before syncing your decks, open the menu at the left right corner of
+Ankidroid and select "Check Media". This will make the image files added by Anki Doodle syncable.
