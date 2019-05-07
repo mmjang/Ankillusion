@@ -162,7 +162,18 @@ public class ImageActivity extends AppCompatActivity {
 
     private void setUpDoodleView(Bitmap bitmap) {
         originalBitmap = bitmap.copy(bitmap.getConfig(), false);
-        //Toast.makeText(this, "width: " + bitmap.getWidth() + "height: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
+
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ankiOcclusionExporter = new AnkiOcclusionExporter(
+                                ImageActivity.this,
+                                originalBitmap
+                        );
+                    }
+                }
+        ).start();
 
         doodleView = new DoodleView(this, bitmap, new IDoodleListener() {
             @Override
