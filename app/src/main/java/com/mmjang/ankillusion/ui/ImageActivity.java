@@ -178,6 +178,9 @@ public class ImageActivity extends AppCompatActivity {
 
         touchGestureListener = new MyDoodleOnTouchGestureListener(doodleView, null);
         DoodleTouchDetector touchDetector = new DoodleTouchDetector(this, touchGestureListener);
+        doodleView.enableZoomer(true);
+        doodleView.enableOverview(false);
+        doodleView.setZoomerScale(2.5f);
         doodleView.setDefaultTouchDetector(touchDetector);
         doodleView.setPen(DoodlePen.BRUSH);
         doodleView.setShape(DoodleShape.FILL_RECT);

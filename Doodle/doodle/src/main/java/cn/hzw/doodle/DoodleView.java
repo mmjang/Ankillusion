@@ -477,31 +477,33 @@ public class DoodleView extends FrameLayout implements IDoodle {
             canvas.restore(); // ***
 
             // overview
-            canvas.save();
-            canvas.translate(mZoomerHorizonX, mLastZoomerY);
-            scale = (mZoomerRadius / 2) / getWidth();
-            canvas.scale(scale, scale);
-            float strokeWidth = 1 / scale;
-            canvas.clipRect(-strokeWidth, -strokeWidth, getWidth() + strokeWidth, getHeight() + strokeWidth);
-            canvas.drawColor(0x88888888);
-            canvas.save();
-            canvas.rotate(mDoodleRotateDegree, getWidth() / 2, getHeight() / 2);
-            float tempScale = mScale;
-            float tempTransX = mTransX;
-            float tempTransY = mTransY;
-            mScale = 1;
-            mTransX = mTransY = 0;
-            super.dispatchDraw(canvas);
-            mScale = tempScale;
-            mTransX = tempTransX;
-            mTransY = tempTransY;
-            canvas.restore();
-            mZoomerTouchPaint.setStrokeWidth(strokeWidth);
-            mZoomerTouchPaint.setColor(0xaa000000);
-            drawRect(canvas, 0, 0, getWidth(), getHeight(), mZoomerTouchPaint);
-            mZoomerTouchPaint.setColor(0xaaffffff);
-            drawRect(canvas, strokeWidth, strokeWidth, getWidth() - strokeWidth, getHeight() - strokeWidth, mZoomerTouchPaint);
-            canvas.restore();
+            if(isEnableOverview()) {
+                canvas.save();
+                canvas.translate(mZoomerHorizonX, mLastZoomerY);
+                scale = (mZoomerRadius / 2) / getWidth();
+                canvas.scale(scale, scale);
+                float strokeWidth = 1 / scale;
+                canvas.clipRect(-strokeWidth, -strokeWidth, getWidth() + strokeWidth, getHeight() + strokeWidth);
+                canvas.drawColor(0x88888888);
+                canvas.save();
+                canvas.rotate(mDoodleRotateDegree, getWidth() / 2, getHeight() / 2);
+                float tempScale = mScale;
+                float tempTransX = mTransX;
+                float tempTransY = mTransY;
+                mScale = 1;
+                mTransX = mTransY = 0;
+                super.dispatchDraw(canvas);
+                mScale = tempScale;
+                mTransX = tempTransX;
+                mTransY = tempTransY;
+                canvas.restore();
+                mZoomerTouchPaint.setStrokeWidth(strokeWidth);
+                mZoomerTouchPaint.setColor(0xaa000000);
+                drawRect(canvas, 0, 0, getWidth(), getHeight(), mZoomerTouchPaint);
+                mZoomerTouchPaint.setColor(0xaaffffff);
+                drawRect(canvas, strokeWidth, strokeWidth, getWidth() - strokeWidth, getHeight() - strokeWidth, mZoomerTouchPaint);
+                canvas.restore();
+            }
         }
 
     }

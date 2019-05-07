@@ -72,6 +72,15 @@ public class DoodlePath extends DoodleRotatableItemBase {
     }
 
     /**
+     * 当Path为手写时返回路径坐标列表
+     * 否则返回 null
+     * @return
+     */
+    public double[][] getHandWritePath(){
+        return new double[0][0];
+    }
+
+    /**
      * getTheHexFormColor
      * @return
      */
@@ -154,6 +163,7 @@ public class DoodlePath extends DoodleRotatableItemBase {
         } else {
             path.mCopyLocation = null;
         }
+
         return path;
     }
 
