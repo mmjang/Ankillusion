@@ -19,4 +19,5 @@ public class Constant {
     };
     public static final int MAX_IMAGE_WIDTH = 1080;
     public static final String OCCLUSION_MODEL_NAME = "ankillusion_note_type_v3";
+    public static final float ZOOMER_MULTIPLIER = 1.5f;
 }
