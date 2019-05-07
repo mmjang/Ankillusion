@@ -42,7 +42,7 @@ Support 3 card-creation modes：
 
 ### Why can't I sync the images to the desktop version of Anki?
 
-Due to implementation details of Ankidroid, when add cards via its api, it doesn't check for
+Due to some implementation details of Ankidroid, when adding cards via its api, it doesn't check for
 media file links in them, which makes the images files not included in the media database and
 can't be synced.
 
