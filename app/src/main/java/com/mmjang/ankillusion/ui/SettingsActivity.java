@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.mmjang.ankillusion.R;
 import com.mmjang.ankillusion.data.Settings;
@@ -17,6 +19,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     View btnRectAngleColor;
     View btnRectAngleHighlightColor;
+    Switch switchAbortAfterCardCreation;
     Settings mySettings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +30,9 @@ public class SettingsActivity extends AppCompatActivity {
         mySettings = Settings.getInstance(this);
         btnRectAngleColor = findViewById(R.id.btn_select_rectangle_color);
         btnRectAngleHighlightColor = findViewById(R.id.btn_select_rectangle_highlight_color);
-
         btnRectAngleColor.setBackgroundColor(Color.parseColor(mySettings.getOcclusionColor()));
         btnRectAngleHighlightColor.setBackgroundColor(Color.parseColor(mySettings.getOcclusionColorHighlight()));
+        switchAbortAfterCardCreation = findViewById(R.id.switch_exit_after_card_creation);
 
         btnRectAngleColor.setOnClickListener(
                 new View.OnClickListener() {
@@ -75,6 +78,19 @@ public class SettingsActivity extends AppCompatActivity {
                                         mySettings.setOcclusionColorHighlight(Utils.color2Hex(color));
                                     }
                                 });
+                    }
+                }
+        );
+
+        switchAbortAfterCardCreation.setChecked(
+                mySettings.getAbortAfterSuccess()
+        );
+
+        switchAbortAfterCardCreation.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        mySettings.setAbortAfterSuccess(isChecked);
                     }
                 }
         );

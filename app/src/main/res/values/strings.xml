@@ -46,4 +46,5 @@
     <string name="tv_donate">Donate</string>
     <string name="for_users_in_china">For users in China:</string>
     <string name="for_international_users">For international users:</string>
+    <string name="exit_after_card_s_creation">Exit after card(s) creation</string>
 </resources>

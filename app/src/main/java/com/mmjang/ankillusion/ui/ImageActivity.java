@@ -175,6 +175,9 @@ public class ImageActivity extends AppCompatActivity {
 
         touchGestureListener = new MyDoodleOnTouchGestureListener(doodleView, null);
         DoodleTouchDetector touchDetector = new DoodleTouchDetector(this, touchGestureListener);
+        doodleView.enableZoomer(true);
+        doodleView.enableOverview(false);
+        doodleView.setZoomerScale(2.5f);
         doodleView.setDefaultTouchDetector(touchDetector);
         doodleView.setPen(DoodlePen.BRUSH);
         doodleView.setShape(DoodleShape.FILL_RECT);
@@ -257,6 +260,9 @@ public class ImageActivity extends AppCompatActivity {
                     OperationResult or = (OperationResult) msg.obj;
                     if(or.isSuccess()){
                         Toast.makeText(ImageActivity.this, R.string.msg_cards_added, Toast.LENGTH_SHORT).show();
+                        if(settings.getAbortAfterSuccess()){
+                            ImageActivity.this.finish();
+                        }
                     }else{
                         Utils.showMessage(
                                 ImageActivity.this,

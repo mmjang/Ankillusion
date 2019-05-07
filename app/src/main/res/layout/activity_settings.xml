@@ -17,6 +17,7 @@
             >
             <TextView
                 android:textSize="18sp"
+                android:textColor="#606060"
                 android:layout_margin="4dp"
                 android:layout_width="0dp"
                 android:layout_weight="7"
@@ -39,6 +40,7 @@
             >
             <TextView
                 android:textSize="18sp"
+                android:textColor="#606060"
                 android:layout_margin="4dp"
                 android:layout_width="0dp"
                 android:layout_weight="7"
@@ -53,5 +55,19 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            >
+            <Switch
+                android:textSize="18sp"
+                android:textColor="#606060"
+                android:id="@+id/switch_exit_after_card_creation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/exit_after_card_s_creation"
+                />
+        </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
