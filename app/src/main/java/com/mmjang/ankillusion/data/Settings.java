@@ -17,6 +17,7 @@ public class Settings {
     private final static String CREATION_MODE = "creation_mode";
     private final static String OCCLUSION_COLOR = "occlusion_color";
     private final static String OCCLUSION_COLOR_HIGHLIGHT = "occlusion_color_highlight";
+    private final static String ABORT_AFTER_SUCCESS = "abort_after_success";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -87,6 +88,16 @@ public class Settings {
 
     public void setCreationMode(int creationMode){
         editor.putInt(CREATION_MODE, creationMode);
+        editor.commit();
+    }
+
+    /***********/
+    public boolean getAbortAfterSuccess(){
+        return sp.getBoolean(ABORT_AFTER_SUCCESS, true);
+    }
+
+    public void setAbortAfterSuccess(boolean abortAfterSuccess){
+        editor.putBoolean(ABORT_AFTER_SUCCESS, abortAfterSuccess);
         editor.commit();
     }
 
