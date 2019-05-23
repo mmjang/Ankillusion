@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
@@ -109,13 +110,13 @@ public class ImageActivity extends AppCompatActivity {
                             //if(cropImageView.)
                             Rect rect = cropImageView.getCropRect();
                             double w = 0, h = 0;
-                            if(rect.width() > Constant.MAX_IMAGE_WIDTH){
-                                w = Constant.MAX_IMAGE_WIDTH;
-                                h = w * ((double) rect.height()/ (double) rect.width());
-                                cropImageView.getCroppedImageAsync((int) w, (int) h);
-                            }else{
-                                cropImageView.getCroppedImageAsync();
-                            }
+//                            if(rect.width() > Constant.MAX_IMAGE_WIDTH){
+//                                w = Constant.MAX_IMAGE_WIDTH;
+//                                h = w * ((double) rect.height()/ (double) rect.width());
+//                                cropImageView.getCroppedImageAsync((int) w, (int) h);
+//                            }else{
+                            cropImageView.getCroppedImageAsync();
+//                            }
                         }
                     }
                 }
@@ -140,10 +141,34 @@ public class ImageActivity extends AppCompatActivity {
                 new CropImageView.OnCropImageCompleteListener() {
                     @Override
                     public void onCropImageComplete(CropImageView view, CropImageView.CropResult result) {
-                        setUpDoodleView(result.getBitmap());
+                        Bitmap originalBitmap = result.getBitmap();
+                        if(originalBitmap.getWidth() > Constant.MAX_IMAGE_WIDTH){
+                            int w = Constant.MAX_IMAGE_WIDTH;
+                            int h = (int) Math.round(w * ((double) originalBitmap.getHeight()/ (double) originalBitmap.getWidth()));
+                            originalBitmap = getResizedBitmap(originalBitmap, w, h);
+                        }
+                        setUpDoodleView(originalBitmap);
                     }
                 }
         );
+    }
+
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 
     private void assginViews() {
@@ -159,7 +184,18 @@ public class ImageActivity extends AppCompatActivity {
 
     private void setUpDoodleView(Bitmap bitmap) {
         originalBitmap = bitmap.copy(bitmap.getConfig(), false);
-        //Toast.makeText(this, "width: " + bitmap.getWidth() + "height: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
+
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ankiOcclusionExporter = new AnkiOcclusionExporter(
+                                ImageActivity.this,
+                                originalBitmap
+                        );
+                    }
+                }
+        ).start();
 
         doodleView = new DoodleView(this, bitmap, new IDoodleListener() {
             @Override
@@ -177,7 +213,7 @@ public class ImageActivity extends AppCompatActivity {
         DoodleTouchDetector touchDetector = new DoodleTouchDetector(this, touchGestureListener);
         doodleView.enableZoomer(true);
         doodleView.enableOverview(false);
-        doodleView.setZoomerScale(2.5f);
+        doodleView.setZoomerScale(Constant.ZOOMER_MULTIPLIER);
         doodleView.setDefaultTouchDetector(touchDetector);
         doodleView.setPen(DoodlePen.BRUSH);
         doodleView.setShape(DoodleShape.FILL_RECT);

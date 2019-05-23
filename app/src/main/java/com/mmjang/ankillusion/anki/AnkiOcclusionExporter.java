@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.mmjang.ankillusion.MyApplication;
 import com.mmjang.ankillusion.R;
 import com.mmjang.ankillusion.data.IOcclusionExporter;
 import com.mmjang.ankillusion.data.OcclusionExportType;
@@ -32,7 +33,18 @@ public class AnkiOcclusionExporter{
     public AnkiOcclusionExporter(Activity activity, Bitmap bitmap){
         mActivity = activity;
         mAnkidroid = new AnkiDroidHelper(activity);
+        //mAnkidroid = new AnkiDroidHelper(MyApplication.getContext());
         mBitmap = bitmap;
+        try {
+            if(deckMap == null) {
+                deckMap = mAnkidroid.getApi().getDeckList();
+            }
+            List<String> deckList = new ArrayList<>();
+            for(String d : deckMap.values()){
+                deckList.add(d);
+            }
+        }catch (Exception e){
+        }
     }
 
     //obj: List<String>
