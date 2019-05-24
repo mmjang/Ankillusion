@@ -55,4 +55,27 @@
         android:layout_height="wrap_content"
         android:id="@+id/edittext_back_note"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_note_tags"
+        />
+
+    <EditText
+        android:id="@+id/edit_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        />
+
+    <android.support.design.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tag_chip_list"
+        >
+    </android.support.design.chip.ChipGroup>
+
 </LinearLayout>
