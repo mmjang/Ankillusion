@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class AnkiOcclusionExporter{
         return new OperationResult(false, String.format(mActivity.getString(R.string.error_msg_no_deck_found),deckName));
     }
 
-    public OperationResult export(List<OcclusionObject> occlusionObjectList, Long mDeckId, String frontString, String backString) {
+    public OperationResult export(List<OcclusionObject> occlusionObjectList, Long mDeckId, String frontString, String backString, List<String> tags) {
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss",
                         Locale.getDefault()).format(new Date());
@@ -121,7 +122,7 @@ public class AnkiOcclusionExporter{
                         mDeckId,
                         new String[] {String.format("<img src='%s'/>", imageFileName), exportString,
                                 frontString, backString},
-                        null
+                        new HashSet<String>(tags)
                 );
             } catch (JSONException e) {
                 return new OperationResult(false, mActivity.getString(R.string.error_msg_generating_json) + e.getLocalizedMessage());

@@ -48,5 +48,5 @@
     <string name="for_users_in_china">支付宝打赏按钮:</string>
     <string name="for_international_users">国际用户打赏按钮:</string>
     <string name="exit_after_card_s_creation">制卡成功后退出应用</string>
-    <string name="add_note_tags">Tags</string>
+    <string name="add_note_tags">标签（以空格分隔）</string>
 </resources>

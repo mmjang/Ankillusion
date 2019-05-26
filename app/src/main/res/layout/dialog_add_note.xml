@@ -71,11 +71,17 @@
         android:maxLines="1"
         />
 
-    <android.support.design.chip.ChipGroup
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tag_chip_list"
+        android:maxHeight="100dp"
         >
-    </android.support.design.chip.ChipGroup>
+        <android.support.design.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tag_chip_list"
+            >
+        </android.support.design.chip.ChipGroup>
 
+    </ScrollView>
 </LinearLayout>
