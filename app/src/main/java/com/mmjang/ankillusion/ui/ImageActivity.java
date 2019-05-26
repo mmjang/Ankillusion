@@ -10,6 +10,8 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -38,7 +42,11 @@ import com.mmjang.ankillusion.data.Settings;
 import com.mmjang.ankillusion.utils.Utils;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cn.hzw.doodle.DoodleColor;
 import cn.hzw.doodle.DoodleOnTouchGestureListener;
@@ -68,6 +76,7 @@ public class ImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         settings = Settings.getInstance(this);
         assginViews();
         hideDoodleView(true);
@@ -312,6 +321,7 @@ public class ImageActivity extends AppCompatActivity {
         }
     };
 
+    List<String> mTagEditedByUser = new ArrayList<>();
 
     private void setupNotesCreationDialog() {
         //start card creation
@@ -365,6 +375,47 @@ public class ImageActivity extends AppCompatActivity {
         }
         //init mode spinner
         modeSpinner.setSelection(Settings.getInstance(ImageActivity.this).getCreationMode());
+
+        //set tags widge
+        final EditText editTag = (EditText) dialogView.findViewById(R.id.edit_tag);
+        //final CheckBox checkBoxSetAsDefaultTag = (CheckBox) dialogView.findViewById(R.id.checkbox_as_default_tag);
+        final ChipGroup tagChipGroup = (ChipGroup) dialogView.findViewById(R.id.tag_chip_list);
+        editTag.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        List<String> storedTags = settings.getLastTags();
+        if (storedTags.size() > 0) {
+            String text = Settings.list2string(storedTags);
+            editTag.setText(text);
+            editTag.setSelection(text.length());
+        }
+        tagChipGroup.setSingleSelection(false);
+        final List<String> userTags = settings.getAllTags();
+        for(String userTag : userTags){
+            final Chip chip = (Chip) inflater.inflate(R.layout.tag_chip_item, null);
+            chip.setText(userTag);
+            chip.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(isChecked){
+                                mTagEditedByUser.add(chip.getText().toString());
+                            }else{
+                                mTagEditedByUser.remove(chip.getText().toString());
+                            }
+                            //tag1,tag2,tag3
+                            String text = Settings.list2string(mTagEditedByUser);
+                            editTag.setText(text);
+                            editTag.setSelection(text.length());
+                        }
+                    }
+            );
+            if(storedTags.contains(userTag)){
+                chip.setChecked(true);
+            }
+            tagChipGroup.addView(chip);
+        }
+
+        ////////////
         dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -410,13 +461,23 @@ public class ImageActivity extends AppCompatActivity {
                             return ;
                         }
 
+                        //obtain tags
+                        mTagEditedByUser = Settings.string2list(editTag.getText().toString());
                         OperationResult orExport = ankiOcclusionExporter.export(
                                 occlusionObjectList,
                                 (Long) orDeckId.getResult(),
                                 editTextFrontNode.getText().toString(),
-                                editTExtBackNote.getText().toString()
+                                editTExtBackNote.getText().toString(),
+                                mTagEditedByUser
                         );
-
+                        //save tags
+                        settings.setLastTags(mTagEditedByUser);
+                        Set<String> tagSet = new HashSet<>(userTags);
+                        tagSet.addAll(mTagEditedByUser);
+                        List<String> combined = new ArrayList<>(tagSet);
+                        Collections.sort(combined);
+                        settings.setAllTags(combined);
+                        ///////////
                         Message message = mHandler.obtainMessage();
                         message.obj = orExport;
                         message.what = CARD_CREATION_FINISHED;

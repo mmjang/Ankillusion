@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Settings {
 
     private static Settings settings = null;
@@ -18,6 +21,9 @@ public class Settings {
     private final static String OCCLUSION_COLOR = "occlusion_color";
     private final static String OCCLUSION_COLOR_HIGHLIGHT = "occlusion_color_highlight";
     private final static String ABORT_AFTER_SUCCESS = "abort_after_success";
+
+    private final static String ALL_TAGS = "all_tags";
+    private final static String LAST_TAGS = "last_tags";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -102,8 +108,58 @@ public class Settings {
     }
 
     /************/
+    public List<String> getAllTags(){
+        return string2list(sp.getString(ALL_TAGS, ""));
+    }
+
+    public void setAllTags(List<String> allTags){
+        editor.putString(ALL_TAGS, list2string(allTags));
+        editor.commit();
+    }
+
+    /***********/
+    public List<String> getLastTags(){
+        return string2list(sp.getString(LAST_TAGS, ""));
+    }
+
+    public void setLastTags(List<String> allTags){
+        editor.putString(LAST_TAGS, list2string(allTags));
+        editor.commit();
+    }
+
+    /***********/
+
     public boolean hasKey(String key) {
         return sp.contains(key);
     }
+
+    /************/
+    public static List<String> string2list(String s){
+        List<String> result = new ArrayList<>();
+        for(String c : s.split(" ")){
+            String trimmed = c.trim();
+            if(!trimmed.isEmpty()) {
+                result.add(trimmed);
+            }
+        }
+        return result;
+    }
+
+    public static String list2string(List<String> list){
+        if(list.size() == 0){
+            return "";
+        }
+        if(list.size() == 1){
+            return list.get(0);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(list.get(0).trim());
+        for(int i = 1; i < list.size(); i ++){
+            sb.append(" ");
+            sb.append(list.get(i).trim());
+        }
+        return sb.toString();
+    }
+    /************/
 }
 
